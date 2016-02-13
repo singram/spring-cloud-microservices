@@ -1,0 +1,47 @@
+buildscript {
+    ext {
+        springBootVersion = '1.3.1.RELEASE'
+        springCloudVersion = '1.1.0.M4'
+        springVersion = '4.0.3.RELEASE'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'maven-publish'
+
+jar {
+    baseName = 'util'
+    version = '0.0.1-SNAPSHOT'
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId 'srai.micro'
+            artifactId 'util'
+            version '0.0.1-SNAPSHOT'
+
+            from components.java
+        }
+    }
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    maven { url "https://repo.spring.io/milestone" }
+}
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+    compile("org.springframework.cloud:spring-cloud-starter:${springCloudVersion}")
+
+    testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.11'
+}

@@ -1,0 +1,16 @@
+person-service:
+  build: ./microservices/core/person-service/.
+  volumes:
+    - /etc/localtime:/etc/localtime:ro
+    - /etc/timezone:/etc/timezone:ro
+    - ./microservices/core/person-service/build/libs:/build
+  ports:
+    - "8080:8080"
+recommendation-service:
+  build: ./microservices/core/recommendation-service/.
+  volumes:
+    - /etc/localtime:/etc/localtime:ro
+    - /etc/timezone:/etc/timezone:ro
+    - ./microservices/core/recommendation-service/build/libs:/build
+  ports:
+    - "8081:8080"
