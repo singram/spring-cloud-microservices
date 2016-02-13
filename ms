@@ -17,13 +17,16 @@ function help {
 function build {
     cd common;                                            ./gradlew clean build publishToMavenLocal; cd -
     cd microservices/core/person-service;                 ./gradlew clean build; cd -
-    cd microservices/core/recommendation-service;         ./gradlew clean build; cd -
+    cd microservices/core/person-recommendation-service;  ./gradlew clean build; cd -
+    cd microservices/core/product-recommendation-service; ./gradlew clean build; cd -
+    cd microservices/aggregate/person-composite-service;  ./gradlew clean build; cd -
+
     find . -name *SNAPSHOT.jar -exec du -h {} \;
 }
 
 case $CMD in
     "run")
-        echo "Starting with subscribers..."
+        echo "Starting services..."
         exec docker-compose up
         ;;
     "clean")
@@ -36,8 +39,8 @@ case $CMD in
         ;;
     "purge")
         echo "Removing api containers and images..."
-        docker rm $(docker ps --no-trunc -aq --filter="name=ms")
-        docker rmi -f $(docker images -q --filter="label=srai.micro=project")
+        docker rm $(docker ps --no-trunc -aq --filter="name=springcloudmicroservices")
+        docker rmi -f $(docker images -q --filter="label=srai.micro.project=true")
         ;;
     "purge_all")
         echo "Removing all docker containers and images..."

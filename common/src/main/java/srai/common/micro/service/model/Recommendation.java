@@ -1,7 +1,5 @@
 package srai.common.micro.service.model;
 
-import java.util.Calendar;
-
 /** Recommendation data model. */
 public class Recommendation extends CommonBaseModel {
 
@@ -10,12 +8,13 @@ public class Recommendation extends CommonBaseModel {
 
   private long weight = 0;
 
+  public Recommendation() {
+  }
+
   public Recommendation(String recommendation) {
-    this.id = (long) (Math.random() * (10000));
+    super();
     this.recommendation = recommendation;
     this.weight = ((long) (Math.random() * (100)));
-    this.setCreatedAt(Calendar.getInstance().getTime());
-    this.setUpdatedAt(Calendar.getInstance().getTime());
   }
 
   /** Recommendation getter. */

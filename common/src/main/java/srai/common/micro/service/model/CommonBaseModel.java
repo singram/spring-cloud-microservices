@@ -1,10 +1,14 @@
 package srai.common.micro.service.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.util.Calendar;
 import java.util.Date;
 
 /** Abstract base model including primary id and
  * created_at and updated_at time fields.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CommonBaseModel {
   /** Primary id. */
   protected Long id;
@@ -18,6 +22,9 @@ public class CommonBaseModel {
   /** Constructor. */
   protected CommonBaseModel() {
     // Private constructor to prevent direct instantiation.
+    this.id = (long) (Math.random() * (10000));
+    this.setCreatedAt(Calendar.getInstance().getTime());
+    this.setUpdatedAt(Calendar.getInstance().getTime());
   }
 
   /** Primary id getter. */

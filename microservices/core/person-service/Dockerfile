@@ -1,5 +1,5 @@
 FROM java:8
-LABEL  srai.micro.service="person-service"
+LABEL  srai.micro.service="person-service" srai.micro.project="true"
 VOLUME /tmp
 RUN mkdir /build
 ADD build/libs/person-service-0.0.1-SNAPSHOT.jar /build/person-service-0.0.1-SNAPSHOT.jar

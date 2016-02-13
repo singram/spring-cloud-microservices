@@ -17,7 +17,7 @@ apply plugin: 'eclipse'
 apply plugin: 'spring-boot'
 
 jar {
-    baseName = 'recommendation-service'
+    baseName = 'person-composite-service'
     version = '0.0.1-SNAPSHOT'
 }
 

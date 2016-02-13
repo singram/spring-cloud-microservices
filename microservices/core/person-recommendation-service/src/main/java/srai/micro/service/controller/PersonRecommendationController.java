@@ -13,23 +13,23 @@ import java.util.HashSet;
 import java.util.Set;
 
 @RestController
-public class RecommendationController extends ManagedResponseControllerBase {
+public class PersonRecommendationController extends ManagedResponseControllerBase {
 
   /**
-   * Sample usage: curl $HOST:$PORT/person/1
+   * Sample usage: curl $HOST:$PORT/recommendations/1
    *
    * @param personId
    * @return
    */
   @RequestMapping(value = "/recommendations/{personId}", method = RequestMethod.GET)
   @ResponseBody public Set<Recommendation> getPerson(@PathVariable int personId) {
-    logger.info("/person called");
+    logger.info("/recommendations called");
     final int pt = controlResponseTime();
     Set<Recommendation> recommendations = new HashSet<Recommendation>();
-    recommendations.add(new Recommendation("recommendation 1"));
-    recommendations.add(new Recommendation("recommendation 2"));
-    recommendations.add(new Recommendation("recommendation 3"));
-    logger.debug("/person return the found person, processing time: {}", pt);
+    recommendations.add(new Recommendation("person recommendation 1"));
+    recommendations.add(new Recommendation("person recommendation 2"));
+    recommendations.add(new Recommendation("person recommendation 3"));
+    logger.debug("/recommendations return the found person, processing time: {}", pt);
     return recommendations;
   }
 

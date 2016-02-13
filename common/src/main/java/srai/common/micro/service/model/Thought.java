@@ -1,7 +1,5 @@
 package srai.common.micro.service.model;
 
-import java.util.Calendar;
-
 /** Thought data model. */
 public class Thought extends CommonBaseModel {
 
@@ -12,9 +10,8 @@ public class Thought extends CommonBaseModel {
   private String data = "";
 
   public Thought(String data) {
+    super();
     this.data = data;
-    this.setCreatedAt(Calendar.getInstance().getTime());
-    this.setUpdatedAt(Calendar.getInstance().getTime());
   }
 
   /** Data getter. */
