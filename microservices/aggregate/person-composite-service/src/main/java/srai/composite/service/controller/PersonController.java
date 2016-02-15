@@ -36,6 +36,7 @@ public class PersonController {
     ResponseEntity<Person> personResult = integration.getPerson(personId);
 
     if (!personResult.getStatusCode().is2xxSuccessful()) {
+      LOG.error("Could not retrieve person {} from person-service.  Http code - ", personId, personResult.getStatusCode());
       return new ResponseEntity<>(null, personResult.getStatusCode());
     }
 
@@ -43,30 +44,19 @@ public class PersonController {
     Recommendation[] personRecommendations = null;
     try {
       ResponseEntity<Recommendation[]> recommendationResult = integration.getPersonRecommendations(personId);
-      if (!recommendationResult.getStatusCode().is2xxSuccessful()) {
-        // Something went wrong with getPersonRecommendations, simply skip the recommendation-information in the response
-        LOG.debug("Call to getPersonRecommendations failed: {}", recommendationResult.getStatusCode());
-      } else {
-        personRecommendations = recommendationResult.getBody();
-      }
+      personRecommendations = recommendationResult.getBody();
     } catch (Throwable t) {
-      LOG.error("getPersonRecommendation error", t);
+      LOG.error("getPersonRecommendations error", t);
       throw t;
     }
-
 
     // 3. Get optional product recommendations
     Recommendation[] productRecommendations = null;
     try {
       ResponseEntity<Recommendation[]> recommendationResult = integration.getProductRecommendations(personId);
-      if (!recommendationResult.getStatusCode().is2xxSuccessful()) {
-        // Something went wrong with getProductRecommendations, simply skip the recommendation-information in the response
-        LOG.debug("Call to getProductRecommendations failed: {}", recommendationResult.getStatusCode());
-      } else {
-        productRecommendations = recommendationResult.getBody();
-      }
+      productRecommendations = recommendationResult.getBody();
     } catch (Throwable t) {
-      LOG.error("getProductRecommendation error", t);
+      LOG.error("getProductRecommendations error", t);
       throw t;
     }
 

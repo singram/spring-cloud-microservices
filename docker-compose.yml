@@ -23,7 +23,7 @@ product-recommendation-service:
   ports:
     - "8082:8080"
 
-person-aggregation-service:
+person-composite-service:
   build: ./microservices/aggregate/person-composite-service/.
   volumes:
     - /etc/localtime:/etc/localtime:ro
@@ -35,3 +35,15 @@ person-aggregation-service:
     - person-service
     - person-recommendation-service
     - product-recommendation-service
+
+
+hystrix-dashboard-service:
+  build: ./microservices/support/hystrix-dashboard/.
+  volumes:
+    - /etc/localtime:/etc/localtime:ro
+    - /etc/timezone:/etc/timezone:ro
+    - ./microservices/support/hystrix-dashboard/build/libs:/build
+  ports:
+    - "8090:8080"
+  links:
+    - person-composite-service

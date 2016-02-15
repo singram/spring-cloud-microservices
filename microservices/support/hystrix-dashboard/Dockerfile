@@ -1,0 +1,7 @@
+FROM java:8
+LABEL  srai.micro.service="hystrix-dashboard-service" srai.micro.project="true"
+VOLUME /tmp
+RUN mkdir /build
+ADD build/libs/hystrix-dashboard-service-0.0.1-SNAPSHOT.jar /build/hystrix-dashboard-service-0.0.1-SNAPSHOT.jar
+RUN bash -c 'touch /hystrix-dashboard-service-0.0.1-SNAPSHOT.jar'
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/build/hystrix-dashboard-service-0.0.1-SNAPSHOT.jar"]

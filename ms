@@ -20,6 +20,7 @@ function build {
     cd microservices/core/person-recommendation-service;  ./gradlew clean build; cd -
     cd microservices/core/product-recommendation-service; ./gradlew clean build; cd -
     cd microservices/aggregate/person-composite-service;  ./gradlew clean build; cd -
+    cd microservices/support/hystrix-dashboard;           ./gradlew clean build; cd -
 
     find . -name *SNAPSHOT.jar -exec du -h {} \;
 }

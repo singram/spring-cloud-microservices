@@ -17,7 +17,7 @@ apply plugin: 'eclipse'
 apply plugin: 'spring-boot'
 
 jar {
-    baseName = 'person-composite-service'
+    baseName = 'hystrix-dashboard-service'
     version = '0.0.1-SNAPSHOT'
 }
 
@@ -38,10 +38,7 @@ dependencies {
     }
     compile("org.springframework.boot:spring-boot-starter-undertow")
     compile("org.springframework.boot:spring-boot-starter-actuator")
-    compile("org.springframework.cloud:spring-cloud-starter-hystrix")
-    compile("srai.micro:util:0.0.1-SNAPSHOT")
-
-    testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
+    compile("org.springframework.cloud:spring-cloud-starter-hystrix-dashboard")
 }
 
 dependencyManagement {

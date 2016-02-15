@@ -32,31 +32,54 @@ To install the 1.6.0:
     chmod +x /usr/local/bin/docker-compose
     exit
 
+Install supporting tools
+
+    sudo apt-get install jq apache2-utils
+
 ### To run
 
 Execute the following to run the services.
 
     ./ms build
-    docker-compose up
+    ./ms run
 
 Note, there are a fair number of services, mostly java, and as such they have a reasonably hefty memory requirement on aggregate.
 
+### To test Hystrix circuit breaking
+
+1. Build and run the system `./ms build && ./ms run`
+2. View the Hystrix dashboard `firefox http://localhost:8090` and view the 'person-composite-service' hystrix stream @ `http://person-composite-service:8080/hystrix.stream`
+3. Generate some load `ab -n 10000 -c 10 -l http://localhost:8083/2`
+4. Adjust performance of underlying services
+    curl  "localhost:808[0-1]/set-processing-time?minMs=1000&maxMs=2000" | jq .
+   or disable a service
+    docker-compose [un]pause [person-service|person-recommendation-service|product-recommendation-service]
+5. Observer Hystrix dashboard for impact
+
 ## References
 
-https://netflix.github.io/
-http://cloud.spring.io/spring-cloud-netflix/spring-cloud-netflix.html
+### Spring Boot Cloud/Netflix OSS
+- https://netflix.github.io/
+- http://cloud.spring.io/spring-cloud-netflix/spring-cloud-netflix.html
 
 ### Service discovery
-http://technologyconversations.com/2015/09/08/service-discovery-zookeeper-vs-etcd-vs-consul/
-http://cloud.spring.io/spring-cloud-consul/#quick-start
-http://gliderlabs.com/registrator/latest/user/quickstart/
+- http://technologyconversations.com/2015/09/08/service-discovery-zookeeper-vs-etcd-vs-consul/
+- http://cloud.spring.io/spring-cloud-consul/#quick-start
+- http://gliderlabs.com/registrator/latest/user/quickstart/
 
 ### Hystrix
-
-https://github.com/Netflix/Hystrix/wiki/Configuration
+- https://github.com/Netflix/Hystrix/wiki/Configuration
 
 ### Monitoring
-https://www.brianchristner.io/how-to-setup-prometheus-docker-monitoring/
+- https://www.brianchristner.io/how-to-setup-prometheus-docker-monitoring/
+
+### Load testing
+- http://dak1n1.com/blog/14-http-load-generate/
+- http://gatling.io/#/
+- https://blazemeter.com/blog/open-source-load-testing-tools-which-one-should-you-use
+
+### Undertow vs Tomcat
+http://www.alexecollins.com/spring-boot-performance/
 
 ## Credits
 

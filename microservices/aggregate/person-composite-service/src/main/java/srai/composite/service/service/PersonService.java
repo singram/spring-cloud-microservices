@@ -1,8 +1,11 @@
 package srai.composite.service.service;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestOperations;
@@ -29,6 +32,7 @@ public class PersonService {
   // personS //
   // -------- //
 
+  @HystrixCommand(fallbackMethod = "defaultPerson")
   public ResponseEntity<Person> getPerson(int personId) {
     String url = "http://person-service:8080/person/" + personId;
     LOG.info("Getperson from URL: {}", url);
@@ -40,10 +44,16 @@ public class PersonService {
     return svcResult;
   }
 
+  public ResponseEntity<Person> defaultPerson(int persontId) {
+    LOG.warn("Using fallback method for person-service");
+    return new ResponseEntity<>(null, HttpStatus.BAD_GATEWAY);
+  }
+
   // ---------------------- //
   // PERSON RECOMMENDATIONS //
   // ---------------------- //
 
+  @HystrixCommand(fallbackMethod = "defaultPersonRecommendations")
   public ResponseEntity<Recommendation[]> getPersonRecommendations(int personId) {
     String url = "http://person-recommendation-service:8080/recommendations/" + personId;
     LOG.debug("GetPersonRecommendations from URL: {}", url);
@@ -55,10 +65,17 @@ public class PersonService {
     return svcResult;
   }
 
+  public ResponseEntity<Recommendation[]> defaultPersonRecommendations(int persontId) {
+    LOG.warn("Using fallback method for person-recommendations-service");
+    Recommendation[] emptyArray = {};
+    return new ResponseEntity<Recommendation[]>(emptyArray, HttpStatus.BAD_GATEWAY);
+  }
+
   // ---------------------- //
   // PRODUCT RECOMMENDATIONS //
   // ---------------------- //
 
+  @HystrixCommand(fallbackMethod = "defaultProductRecommendations")
   public ResponseEntity<Recommendation[]> getProductRecommendations(int personId) {
     String url = "http://product-recommendation-service:8080/recommendations/" + personId;
     LOG.debug("GetProductRecommendations from URL: {}", url);
@@ -69,5 +86,12 @@ public class PersonService {
 
     return svcResult;
   }
+
+  public ResponseEntity<Recommendation[]> defaultProductRecommendations(int persontId) {
+    LOG.warn("Using fallback method for product-recommendations-service");
+    Recommendation[] emptyArray = {};
+    return new ResponseEntity<Recommendation[]>(emptyArray, HttpStatus.BAD_GATEWAY);
+  }
+
 
 }
