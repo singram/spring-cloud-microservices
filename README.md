@@ -1,5 +1,5 @@
 # spring-cloud-microservices
-Experiments in spring cloud.
+Experiments in spring cloud and the Netflix OSS stack
 
 ## Setup
 
@@ -51,10 +51,10 @@ Note, there are a fair number of services, mostly java, and as such they have a 
 2. View the Hystrix dashboard `firefox http://localhost:8090` and view the 'person-composite-service' hystrix stream @ `http://person-composite-service:8080/hystrix.stream`
 3. Generate some load `ab -n 10000 -c 10 -l http://localhost:8083/2`
 4. Adjust performance of underlying services
-    curl  "localhost:808[0-1]/set-processing-time?minMs=1000&maxMs=2000" | jq .
+    `curl  "localhost:808[0-2]/set-processing-time?minMs=1000&maxMs=2000" | jq .`
    or disable a service
-    docker-compose [un]pause [person-service|person-recommendation-service|product-recommendation-service]
-5. Observer Hystrix dashboard for impact
+    `docker-compose [un]pause [person-service|person-recommendation-service|product-recommendation-service]`
+5. Observe Hystrix dashboard for impact
 
 ## References
 
@@ -79,7 +79,7 @@ Note, there are a fair number of services, mostly java, and as such they have a 
 - https://blazemeter.com/blog/open-source-load-testing-tools-which-one-should-you-use
 
 ### Undertow vs Tomcat
-http://www.alexecollins.com/spring-boot-performance/
+- http://www.alexecollins.com/spring-boot-performance/
 
 ## Credits
 
