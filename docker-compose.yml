@@ -6,6 +6,8 @@ person-service:
     - ./microservices/core/person-service/build/libs:/build
   ports:
     - "8080:8080"
+  links:
+    - person-service-redis
 person-recommendation-service:
   build: ./microservices/core/person-recommendation-service/.
   volumes:
@@ -36,6 +38,10 @@ person-composite-service:
     - person-recommendation-service
     - product-recommendation-service
 
+person-service-redis:
+  image: redis:3.0.7
+  ports:
+    - "6379:6379"
 
 hystrix-dashboard-service:
   build: ./microservices/support/hystrix-dashboard/.

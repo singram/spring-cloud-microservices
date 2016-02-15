@@ -10,6 +10,10 @@ function help {
     echo "Usage:"
     echo "    ./${SCRIPT_NAME} build"
     echo "    ./${SCRIPT_NAME} clean"
+    echo "    ./${SCRIPT_NAME} redis_monitor"
+    echo "    ./${SCRIPT_NAME} redis_clear"
+    echo "    ./${SCRIPT_NAME} purge"
+    echo "    ./${SCRIPT_NAME} purge_all"
     echo "    ./${SCRIPT_NAME} run"
     echo
 }
@@ -26,9 +30,8 @@ function build {
 }
 
 case $CMD in
-    "run")
-        echo "Starting services..."
-        exec docker-compose up
+    "build")
+        build
         ;;
     "clean")
         echo "Removing unneeded containers and images..."
@@ -37,6 +40,18 @@ case $CMD in
         ;;
     "help")
         help
+        ;;
+    "redis_clear")
+        echo "Clear redis"
+        docker exec -it springcloudmicroservices_person-service-redis_1 redis-cli FLUSHDB
+        ;;
+    "redis_load_data")
+        echo "Load test data into redis"
+        ./microservices/core/person-service/load_test_data $PARAMS
+        ;;
+    "redis_monitor")
+        echo "Monitoring redis"
+        docker exec -it springcloudmicroservices_person-service-redis_1 redis-cli MONITOR
         ;;
     "purge")
         echo "Removing api containers and images..."
@@ -48,8 +63,9 @@ case $CMD in
         docker rm -f $(docker ps -a -q)
         docker rmi -f $(docker images -q)
         ;;
-    "build")
-        build
+    "run")
+        echo "Starting services..."
+        exec docker-compose up
         ;;
     *)
         echo "I don't know what you want me to do"

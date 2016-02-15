@@ -1,6 +1,13 @@
 # spring-cloud-microservices
 Experiments in spring cloud and the Netflix OSS stack
 
+## Areas to experiment in
+- Hystrix
+- Zuul
+- Feign
+- Eureka/Consul
+- Vault
+
 ## Setup
 
 Pre-requisites
@@ -69,6 +76,7 @@ Note, there are a fair number of services, mostly java, and as such they have a 
 
 ### Hystrix
 - https://github.com/Netflix/Hystrix/wiki/Configuration
+- https://ahus1.github.io/hystrix-examples/manual.html
 
 ### Monitoring
 - https://www.brianchristner.io/how-to-setup-prometheus-docker-monitoring/
@@ -80,6 +88,9 @@ Note, there are a fair number of services, mostly java, and as such they have a 
 
 ### Undertow vs Tomcat
 - http://www.alexecollins.com/spring-boot-performance/
+
+### Vault
+- https://github.com/markramach/spring-boot-starter-vault
 
 ## Credits
 

@@ -46,8 +46,8 @@ public class Person extends CommonBaseModel {
   /** String representation. */
   @Override
   public String toString() {
-    return "Person [firstName=" + this.firstName + ", lastName=" + this.lastName
-        + "]";
+    return "Person [id=" + this.id + ", firstName=" + this.firstName + ", lastName=" + this.lastName
+        + ", createdAt=" + this.getCreatedAt() + ", updatedAt=" + this.getUpdatedAt() +"]";
   }
 
 }

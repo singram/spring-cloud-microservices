@@ -13,6 +13,7 @@ public class Recommendation extends CommonBaseModel {
 
   public Recommendation(String recommendation) {
     super();
+    this.id = (long) (Math.random() * (10000));
     this.recommendation = recommendation;
     this.weight = ((long) (Math.random() * (100)));
   }
@@ -39,6 +40,13 @@ public class Recommendation extends CommonBaseModel {
    */
   public void setWeight(long weight) {
     this.weight = weight;
+  }
+
+  /** String representation. */
+  @Override
+  public String toString() {
+    return "Person [id=" + this.id + ", recommendation=" + this.recommendation + ", weight=" + this.weight
+        + ", createdAt=" + this.getCreatedAt() + ", updatedAt=" + this.getUpdatedAt() +"]";
   }
 
 }

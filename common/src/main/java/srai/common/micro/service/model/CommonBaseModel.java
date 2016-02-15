@@ -2,6 +2,7 @@ package srai.common.micro.service.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -9,7 +10,10 @@ import java.util.Date;
  * created_at and updated_at time fields.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CommonBaseModel {
+public class CommonBaseModel implements Serializable {
+  /** Serializable GUID   */
+  private static final long serialVersionUID = 264368308252242812L;
+
   /** Primary id. */
   protected Long id;
 
@@ -22,7 +26,6 @@ public class CommonBaseModel {
   /** Constructor. */
   protected CommonBaseModel() {
     // Private constructor to prevent direct instantiation.
-    this.id = (long) (Math.random() * (10000));
     this.setCreatedAt(Calendar.getInstance().getTime());
     this.setUpdatedAt(Calendar.getInstance().getTime());
   }
