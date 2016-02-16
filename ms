@@ -15,6 +15,7 @@ function help {
     echo "    ./${SCRIPT_NAME} purge"
     echo "    ./${SCRIPT_NAME} purge_all"
     echo "    ./${SCRIPT_NAME} run"
+    echo "    ./${SCRIPT_NAME} stats"
     echo
 }
 
@@ -66,6 +67,10 @@ case $CMD in
     "run")
         echo "Starting services..."
         exec docker-compose up
+        ;;
+    "stats")
+        echo "Displaying docker stats..."
+        docker stats $(docker ps  | sed 1d | awk '{print $NF}')
         ;;
     *)
         echo "I don't know what you want me to do"
