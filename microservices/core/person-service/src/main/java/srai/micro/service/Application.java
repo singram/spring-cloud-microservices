@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import srai.micro.service.model.CachablePerson;
@@ -17,13 +16,6 @@ import srai.micro.service.model.CachablePerson;
 public class Application {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
-
-  @Bean
-  JedisConnectionFactory jedisConnectionFactory() {
-    JedisConnectionFactory factory = new JedisConnectionFactory();
-    factory.setUsePool(true);
-    return factory;
-  }
 
   @Bean
   RedisTemplate<String, CachablePerson> redisTemplate(RedisConnectionFactory connectionFactory) {
@@ -36,4 +28,5 @@ public class Application {
   public static void main(final String... args) {
     SpringApplication.run(Application.class, args);
   }
+
 }
