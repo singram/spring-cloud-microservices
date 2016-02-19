@@ -7,6 +7,7 @@ Experiments in spring cloud and the Netflix OSS stack
 - Feign
 - Eureka/Consul
 - Vault
+- Dynamic configuration
 
 ## Setup
 
@@ -77,9 +78,12 @@ Note, there are a fair number of services, mostly java, and as such they have a 
 ### Hystrix
 - https://github.com/Netflix/Hystrix/wiki/Configuration
 - https://ahus1.github.io/hystrix-examples/manual.html
+- https://github.com/Xorlev/crankshaftd
 
-### Monitoring
+### Docker host Monitoring
+- https://www.brianchristner.io/how-to-setup-docker-monitoring/
 - https://www.brianchristner.io/how-to-setup-prometheus-docker-monitoring/
+- https://github.com/vegasbrianc/prometheus
 
 ### Load testing
 - http://dak1n1.com/blog/14-http-load-generate/
