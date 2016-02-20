@@ -60,6 +60,8 @@ Note, there are a fair number of services, mostly java, and as such they have a 
 3. Generate some load `ab -n 10000 -c 10 -l http://localhost:8083/2`
 4. Adjust performance of underlying services
     `curl  "localhost:808[0-2]/set-processing-time?minMs=1000&maxMs=2000" | jq .`
+   or adjust service error rate
+    `curl  "localhost:808[0-2]/set-error?percentage=20" | jq .`
    or disable a service
     `docker-compose [un]pause [person-service|person-recommendation-service|product-recommendation-service]`
 5. Observe Hystrix dashboard for impact

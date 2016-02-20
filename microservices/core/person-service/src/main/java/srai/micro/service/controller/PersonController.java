@@ -28,7 +28,7 @@ public class PersonController extends ManagedResponseControllerBase {
   @RequestMapping(value = "/person/{personId}", method = RequestMethod.GET)
   @ResponseBody public ResponseEntity<?> getPerson(@PathVariable long personId) {
     logger.info("/person/{personId} called", personId);
-    final int pt = controlResponseTime();
+    final int pt = controlResponseTimeAndError();
     logger.debug("/person/{personId} return the found person, processing time: {}", personId, pt);
     CachablePerson person = new CachablePerson(personId);
     person = personRepository.get(person);
@@ -41,7 +41,7 @@ public class PersonController extends ManagedResponseControllerBase {
   @RequestMapping(value = "/person/", method = RequestMethod.POST)
   @ResponseBody public void savePerson(@RequestBody final CachablePerson person) {
     logger.info("/person/ called");
-    final int pt = controlResponseTime();
+    final int pt = controlResponseTimeAndError();
     logger.debug("/person/ return the created person, processing time: {}", pt);
     personRepository.put(person);
   }

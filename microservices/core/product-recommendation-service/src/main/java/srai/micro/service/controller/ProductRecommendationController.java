@@ -24,7 +24,7 @@ public class ProductRecommendationController extends ManagedResponseControllerBa
   @RequestMapping(value = "/recommendations/{personId}", method = RequestMethod.GET)
   @ResponseBody public Set<Recommendation> getPerson(@PathVariable int personId) {
     logger.info("/recommendations called");
-    final int pt = controlResponseTime();
+    final int pt = controlResponseTimeAndError();
     Set<Recommendation> recommendations = new HashSet<Recommendation>();
     recommendations.add(new Recommendation("product recommendation 1"));
     recommendations.add(new Recommendation("product recommendation 2"));

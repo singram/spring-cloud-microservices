@@ -1,8 +1,8 @@
 hystrix:
-  threadpool:
+  threadpool: # Treadpool Hystrix commands are executed on
     default:
       # Maximum number of concurrent requests when using thread pools (Default: 10)
-      coreSize: 100
+      coreSize: 20
       # Maximum LinkedBlockingQueue size - -1 for using SynchronousQueue (Default: -1)
       maxQueueSize: -1
       # Queue size rejection threshold (Default: 5)
@@ -10,11 +10,13 @@ hystrix:
   command:
     default:
       circuitBreaker:
-        sleepWindowInMilliseconds: 30000
-        requestVolumeThreshold: 3
+        sleepWindowInMilliseconds: 10000  # Delay after circuit is tripped before attempts are made again
+        requestVolumeThreshold: 3  # Failures in window to trip circuit
+        #errorThresholdPercentage: 50 # % failures in window to trip circuit
       execution:
+        timeout:
+          enabled: true # Enable/ disable timeout protection
         isolation:
-#          strategy: SEMAPHORE, no thread pool but timeout handling stops to work
           strategy: THREAD
           thread:
-            timeoutInMilliseconds: 4000
+            timeoutInMilliseconds: 2000 # Default timeout per execution attempt 

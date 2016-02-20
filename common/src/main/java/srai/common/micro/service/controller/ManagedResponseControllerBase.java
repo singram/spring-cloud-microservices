@@ -13,11 +13,16 @@ public class ManagedResponseControllerBase {
   @Autowired
   protected ServiceResponseTimer setProcTimeBean;
 
+  protected int errorChance = 0;
+
   protected final Logger logger = LoggerFactory.getLogger( getClass() );
 
-  protected int controlResponseTime() {
+  protected int controlResponseTimeAndError() {
     int pt = setProcTimeBean.calculateProcessingTime();
     sleep(pt);
+    if ((int)(Math.random() * 100) < errorChance) {
+      throw new RuntimeException("Indeterminate error!!!!");
+    }
     return pt;
   }
 
@@ -30,9 +35,10 @@ public class ManagedResponseControllerBase {
   }
 
   /**
+   * Set response time for controller
    * Sample usage:
    *
-   *  curl "http://localhost:10002/set-processing-time?minMs=1000&maxMs=2000"
+   *  curl "http://localhost:8080/set-processing-time?minMs=1000&maxMs=2000"
    *
    * @param minMs
    * @param maxMs
@@ -45,5 +51,26 @@ public class ManagedResponseControllerBase {
     logger.info("/set-processing-time called: {} - {} ms", minMs, maxMs);
 
     setProcTimeBean.setDefaultProcessingTime(minMs, maxMs);
+  }
+
+  /**
+   * Set change of system error for controller
+   * Sample usage:
+   *
+   *  curl "http://localhost:8080/set-error?percentage=20"
+   *
+   * @param percentage
+   */
+  @RequestMapping("/set-error")
+  @ResponseBody public void setProcessingTime(
+      @RequestParam(value = "percentage", required = true) int percentage) {
+    if (percentage < 0) {
+      percentage = 0;
+    }
+    else if (percentage > 100) {
+      percentage = 100;
+    }
+    logger.info("/set-error called: {} %", percentage);
+    this.errorChance = percentage;
   }
 }
