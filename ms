@@ -13,6 +13,7 @@ function help {
     echo "    ./${SCRIPT_NAME} redis_clear"
     echo "    ./${SCRIPT_NAME} redis_load_data"
     echo "    ./${SCRIPT_NAME} redis_monitor"
+    echo "    ./${SCRIPT_NAME} portals"
     echo "    ./${SCRIPT_NAME} purge"
     echo "    ./${SCRIPT_NAME} purge_all"
     echo "    ./${SCRIPT_NAME} run"
@@ -27,6 +28,8 @@ function build {
     cd microservices/core/product-recommendation-service; ./gradlew clean build; cd -
     cd microservices/aggregate/person-composite-service;  ./gradlew clean build; cd -
     cd microservices/support/hystrix-dashboard;           ./gradlew clean build; cd -
+    cd microservices/support/turbine;                     ./gradlew clean build; cd -
+    cd microservices/support/eureka;                      ./gradlew clean build; cd -
 
     find . -name *SNAPSHOT.jar -exec du -h {} \;
 }
@@ -54,6 +57,10 @@ case $CMD in
     "redis_monitor")
         echo "Monitoring redis"
         docker exec -it springcloudmicroservices_person-service-redis_1 redis-cli MONITOR
+        ;;
+    "portals")
+        echo "Viewing management portals..."
+        firefox http://localhost:8001 http://localhost:8000/hystrix http://localhost:8000/hystrix/monitor?stream=http%3A%2F%2Fperson-composite-service%3A8080%2Fhystrix.stream http://localhost:8000/hystrix/monitor?stream=http%3A%2F%2Fturbine-service%3A8989%2Fturbine.stream &
         ;;
     "purge")
         echo "Removing api containers and images..."

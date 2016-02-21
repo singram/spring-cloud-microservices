@@ -1,0 +1,14 @@
+server:
+  port: 8989
+
+management:
+  port: 8990
+
+info:
+  component: Turbine
+
+turbine:
+#  aggregator:
+#    clusterConfig: PERSON-COMPOSITE-SERVICE
+  appConfig: person-composite-service
+  clusterNameExpression: new String("default")

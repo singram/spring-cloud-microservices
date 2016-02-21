@@ -27,6 +27,7 @@ product-recommendation-service:
 
 person-composite-service:
   build: ./microservices/aggregate/person-composite-service/.
+  hostname: person-composite-service
   volumes:
     - /etc/localtime:/etc/localtime:ro
     - /etc/timezone:/etc/timezone:ro
@@ -34,6 +35,7 @@ person-composite-service:
   ports:
     - "8083:8080"
   links:
+    - eureka-service
     - person-service
     - person-recommendation-service
     - product-recommendation-service
@@ -50,6 +52,38 @@ hystrix-dashboard-service:
     - /etc/timezone:/etc/timezone:ro
     - ./microservices/support/hystrix-dashboard/build/libs:/build
   ports:
-    - "8090:8080"
+    - "8000:8080"
   links:
+    - person-composite-service
+    - eureka-service
+    - turbine-service
+
+eureka-service:
+  build: ./microservices/support/eureka/.
+  volumes:
+    - /etc/localtime:/etc/localtime:ro
+    - /etc/timezone:/etc/timezone:ro
+    - ./microservices/support/eureka/build/libs:/build
+  expose:
+    - 8761
+  ports:
+    - "8001:8761"
+
+# NOTES
+#  Sometimes needs to be started last ( docker-compose stop turbine-service && docker-compose up turbine-service
+#  TODO. Remove hostname hack.  Right now ip's are not registered with eureka, just hostnames.
+turbine-service:
+  build: ./microservices/support/turbine/.
+  volumes:
+    - /etc/localtime:/etc/localtime:ro
+    - /etc/timezone:/etc/timezone:ro
+    - ./microservices/support/turbine/build/libs:/build
+  expose:
+    - 8989
+    - 8990
+  ports:
+    - "8002:8989"
+    - "8003:8990"
+  links:
+    - eureka-service
     - person-composite-service

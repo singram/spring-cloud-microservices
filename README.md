@@ -53,6 +53,12 @@ Execute the following to run the services.
 
 Note, there are a fair number of services, mostly java, and as such they have a reasonably hefty memory requirement on aggregate.
 
+### Gradle daemon
+
+To accelerate local development, it is recommended to run gradle daemonized.  This is as simple as running the following
+
+    echo "org.gradle.daemon=true" >> ~/.gradle/gradle.properties
+
 ### To test Hystrix circuit breaking
 
 1. Build and run the system `./ms build && ./ms run`
@@ -64,7 +70,33 @@ Note, there are a fair number of services, mostly java, and as such they have a 
     `curl  "localhost:808[0-2]/set-error?percentage=20" | jq .`
    or disable a service
     `docker-compose [un]pause [person-service|person-recommendation-service|product-recommendation-service]`
-5. Observe Hystrix dashboard for impact
+5. Observe Hystrix dashboard for impact `./ms portals` (shows eureka, hystrix & turbine dashboards)
+
+### Turbine - Hystrix Stream aggregation
+
+- While turbine v1 support property based configuration, turbine v2 only supports discovery explicitly via Eureka.  Patches seem slow to be propagated by Netflix team.
+ - Spring Cloud Turbine will support Consul on next release
+- Eureka client versions referenced in 1.0.6 are incompatible with the Brixton.M4 Eureka service and should be excluded.
+
+### Eureka Notes
+
+- Clients are now auto-deregistered upon shutdown
+- Clients connect to Eureka in bootstrap phase of spring-cloud app as as such need to be identified correctly.
+ - The bootstrap phase provides a convenient hook to centralized configuration management services such as Vault
+ - Query services `curl -s -H "Accept: application/json" http://localhost:8761/eureka/apps | jq '.applications.application[]'`
+
+## Service overview
+
+| Service                        | Port   | Description  |
+| -------------                  | ------ | ------------ |
+| person-service                 | 8080   | Basic micro service with redis backend |
+| person-recommendation-service  | 8081   | Micro service stub |
+| product-recommendation-service | 8082   | Micro service stub |
+| person-composite-service       | 8083   | Composite service calling above 3 microservices |
+| hystrix-dashboard              | 8000   | SSE visualization tool (Hystrix specific) |
+| eureka                         | 8001   | Service discovery service |
+| turbine                        | 8002/3 | SSE aggregation service |
+| redis                          | 6379   | Backing person service persistance |
 
 ## References
 
@@ -97,6 +129,9 @@ Note, there are a fair number of services, mostly java, and as such they have a 
 
 ### Vault
 - https://github.com/markramach/spring-boot-starter-vault
+
+### Smaller Java 8 docker images
+- https://developer.atlassian.com/blog/2015/08/minimal-java-docker-containers/
 
 ## Credits
 
