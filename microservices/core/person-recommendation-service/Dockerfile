@@ -1,4 +1,4 @@
-FROM java:8
+FROM anapsix/alpine-java:jre8
 LABEL  srai.micro.service="person-recommendation-service" srai.micro.project="true"
 VOLUME /tmp
 RUN mkdir /build

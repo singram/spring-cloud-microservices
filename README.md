@@ -132,7 +132,9 @@ To accelerate local development, it is recommended to run gradle daemonized.  Th
 
 ### Smaller Java 8 docker images & memory
 - https://developer.atlassian.com/blog/2015/08/minimal-java-docker-containers/
+- https://github.com/cloudimmunity/docker-slim
 - https://spring.io/blog/2015/12/10/spring-boot-memory-performance
+- https://blog.takipi.com/lean-mean-java-virtual-machine-making-your-docker-7x-lighter-with-alpine-linux/
 
 ## Credits
 
