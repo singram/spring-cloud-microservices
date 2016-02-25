@@ -62,7 +62,7 @@ To accelerate local development, it is recommended to run gradle daemonized.  Th
 ### To test Hystrix circuit breaking
 
 1. Build and run the system `./ms build && ./ms run`
-2. View the Hystrix dashboard `firefox http://localhost:8090` and view the 'person-composite-service' hystrix stream @ `http://person-composite-service:8080/hystrix.stream`
+2. Check memory and uptime via `./ms stats`.  When the system is stable and all services have started CPU usage on all processes should be nominal.
 3. Generate some load `ab -n 10000 -c 10 -l http://localhost:8083/2`
 4. Adjust performance of underlying services
     `curl  "localhost:808[0-2]/set-processing-time?minMs=1000&maxMs=2000" | jq .`
@@ -130,8 +130,9 @@ To accelerate local development, it is recommended to run gradle daemonized.  Th
 ### Vault
 - https://github.com/markramach/spring-boot-starter-vault
 
-### Smaller Java 8 docker images
+### Smaller Java 8 docker images & memory
 - https://developer.atlassian.com/blog/2015/08/minimal-java-docker-containers/
+- https://spring.io/blog/2015/12/10/spring-boot-memory-performance
 
 ## Credits
 
