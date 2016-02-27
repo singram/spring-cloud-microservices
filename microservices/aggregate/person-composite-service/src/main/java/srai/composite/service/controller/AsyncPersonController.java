@@ -1,5 +1,7 @@
 package srai.composite.service.controller;
 
+import com.netflix.hystrix.exception.HystrixRuntimeException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import srai.composite.service.service.AsyncPersonService;
 import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.concurrent.RejectedExecutionException;
 
 @RestController
 @RequestMapping("/async")
@@ -30,7 +33,15 @@ public class AsyncPersonController {
   @RequestMapping("/{personId}")
   public ResponseEntity<PersonComposite> getProduct(@PathVariable int personId) throws InterruptedException, ExecutionException {
 
-    final Future<ResponseEntity<Person>> personResult = asyncPersonService.getPersonAsync(personId);
+    Future<ResponseEntity<Person>> personResult = null;
+    try {
+      personResult = asyncPersonService.getPersonAsync(personId);
+    } catch (HystrixRuntimeException e) {
+      if (e.getCause().getClass().equals(RejectedExecutionException.class) ) {
+        LOG.warn("********************* Person-Service concurrency limit reached *************************)");
+        return new ResponseEntity<>(null, HttpStatus.TOO_MANY_REQUESTS);
+      }
+    }
     final Future<ResponseEntity<Recommendation[]>> recommendationPersonResult = asyncPersonService.getPersonRecommendationsAsync(personId);
     final Future<ResponseEntity<Recommendation[]>> recommendationProductResult = asyncPersonService.getProductRecommendationsAsync(personId);
 

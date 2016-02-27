@@ -25,8 +25,9 @@ public class AsyncPersonService extends PersonService {
 
   private static final Logger LOG = LoggerFactory.getLogger(AsyncPersonService.class);
 
-  @HystrixCommand(fallbackMethod = "defaultPerson", commandProperties = {
-      @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "1000") } )
+  @HystrixCommand(fallbackMethod = "defaultPerson"
+      , groupKey="personRateLimiter", threadPoolProperties = { @HystrixProperty(name = "coreSize", value = "5") }
+      )
   public Future<ResponseEntity<Person>> getPersonAsync(final int personId) {
     return new AsyncResult<ResponseEntity<Person>>() {
       @Override
@@ -45,7 +46,9 @@ public class AsyncPersonService extends PersonService {
   // PERSON RECOMMENDATIONS //
   // ---------------------- //
 
-  @HystrixCommand(fallbackMethod = "defaultPersonRecommendationsAsync")
+  @HystrixCommand(fallbackMethod = "defaultPersonRecommendationsAsync"
+      , commandProperties = { @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "1000") }
+      )
   public Future<ResponseEntity<Recommendation[]>> getPersonRecommendationsAsync(final int personId) {
     return new AsyncResult<ResponseEntity<Recommendation[]>>() {
       @Override
@@ -55,7 +58,8 @@ public class AsyncPersonService extends PersonService {
     };
   }
 
-  public ResponseEntity<Recommendation[]> defaultPersonRecommendationsAsync(int persontId) {
+  public ResponseEntity<Recommendation[]> defaultPersonRecommendationsAsync(int persontId, Throwable e) {
+    LOG.warn("Using fallback method for person-recommendation-service. {}", e.getMessage());
     return defaultPersonRecommendations(persontId);
   }
 
@@ -73,7 +77,8 @@ public class AsyncPersonService extends PersonService {
     };
   }
 
-  public ResponseEntity<Recommendation[]> defaultProductRecommendationsAsync(int persontId) {
+  public ResponseEntity<Recommendation[]> defaultProductRecommendationsAsync(int persontId, Throwable e) {
+    LOG.warn("Using fallback method for product-recommendation-service. {}", e.getMessage());
     return defaultProductRecommendations(persontId);
   }
 

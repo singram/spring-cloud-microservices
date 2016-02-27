@@ -74,6 +74,11 @@ To accelerate local development, it is recommended to run gradle daemonized.  Th
     `docker-compose [un]pause [person-service|person-recommendation-service|product-recommendation-service]`
 5. Observe Hystrix dashboard for impact `./ms portals` (shows eureka, hystrix & turbine dashboards)
 
+### Hystrix notes
+
+- Thread pools are defined by group not by command.
+- Thread pool saturation must be handled outside of Hystrix.  By it's fundamental nature, if there is not a thread in the pool available Hystrix by definition cannot handle it, even if only to use a fallback.
+
 ### Turbine - Hystrix Stream aggregation
 
 - While turbine v1 support property based configuration, turbine v2 only supports discovery explicitly via Eureka.  Patches seem slow to be propagated by Netflix team.
