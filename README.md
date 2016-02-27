@@ -53,6 +53,8 @@ Execute the following to run the services.
 
 Note, there are a fair number of services, mostly java, and as such they have a reasonably hefty memory requirement on aggregate.
 
+Run `./ms redis_load_data` to populate test data.  The needs to be run only once.
+
 ### Gradle daemon
 
 To accelerate local development, it is recommended to run gradle daemonized.  This is as simple as running the following
@@ -63,7 +65,7 @@ To accelerate local development, it is recommended to run gradle daemonized.  Th
 
 1. Build and run the system `./ms build && ./ms run`
 2. Check memory and uptime via `./ms stats`.  When the system is stable and all services have started CPU usage on all processes should be nominal.
-3. Generate some load `ab -n 10000 -c 10 -l http://localhost:8083/2`
+3. Generate some load `ab -n 10000 -c 10 -l http://localhost:8083/[async/]2`
 4. Adjust performance of underlying services
     `curl  "localhost:808[0-2]/set-processing-time?minMs=1000&maxMs=2000" | jq .`
    or adjust service error rate
@@ -135,8 +137,9 @@ To accelerate local development, it is recommended to run gradle daemonized.  Th
 - https://github.com/cloudimmunity/docker-slim
 - https://spring.io/blog/2015/12/10/spring-boot-memory-performance
 - https://blog.takipi.com/lean-mean-java-virtual-machine-making-your-docker-7x-lighter-with-alpine-linux/
+- http://blog.yohanliyanage.com/2015/05/docker-clean-up-after-yourself/
 
 ## Credits
 
 Insprired heavily by
-http://callistaenterprise.se/blogg/teknik/2015/04/10/building-microservices-with-spring-cloud-and-netflix-oss-part-1/
+- http://callistaenterprise.se/blogg/teknik/2015/04/10/building-microservices-with-spring-cloud-and-netflix-oss-part-1/

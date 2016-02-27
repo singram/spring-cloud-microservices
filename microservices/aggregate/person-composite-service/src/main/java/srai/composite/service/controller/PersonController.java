@@ -22,7 +22,7 @@ public class PersonController {
   private static final Logger LOG = LoggerFactory.getLogger(PersonController.class);
 
   @Autowired
-  PersonService integration;
+  PersonService personService;
 
   @RequestMapping("/")
   public String getProduct() {
@@ -33,7 +33,7 @@ public class PersonController {
   public ResponseEntity<PersonComposite> getProduct(@PathVariable int personId) {
 
     // 1. First get mandatory product information
-    ResponseEntity<Person> personResult = integration.getPerson(personId);
+    ResponseEntity<Person> personResult = personService.getPerson(personId);
 
     if (!personResult.getStatusCode().is2xxSuccessful()) {
       LOG.error("Could not retrieve person {} from person-service.  Http code - ", personId, personResult.getStatusCode());
@@ -43,7 +43,7 @@ public class PersonController {
     // 2. Get optional person recommendations
     Recommendation[] personRecommendations = null;
     try {
-      ResponseEntity<Recommendation[]> recommendationResult = integration.getPersonRecommendations(personId);
+      ResponseEntity<Recommendation[]> recommendationResult = personService.getPersonRecommendations(personId);
       personRecommendations = recommendationResult.getBody();
     } catch (Throwable t) {
       LOG.error("getPersonRecommendations error", t);
@@ -53,7 +53,7 @@ public class PersonController {
     // 3. Get optional product recommendations
     Recommendation[] productRecommendations = null;
     try {
-      ResponseEntity<Recommendation[]> recommendationResult = integration.getProductRecommendations(personId);
+      ResponseEntity<Recommendation[]> recommendationResult = personService.getProductRecommendations(personId);
       productRecommendations = recommendationResult.getBody();
     } catch (Throwable t) {
       LOG.error("getProductRecommendations error", t);

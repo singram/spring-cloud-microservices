@@ -25,7 +25,7 @@ public class PersonService {
   private static final Logger LOG = LoggerFactory.getLogger(PersonService.class);
 
   @Autowired
-  private RestOperations restTemplate;
+  protected RestOperations restTemplate;
 
 
   // -------- //
@@ -56,7 +56,7 @@ public class PersonService {
   @HystrixCommand(fallbackMethod = "defaultPersonRecommendations")
   public ResponseEntity<Recommendation[]> getPersonRecommendations(int personId) {
     String url = "http://person-recommendation-service:8080/recommendations/" + personId;
-    LOG.debug("GetPersonRecommendations from URL: {}", url);
+    LOG.info("GetPersonRecommendations from URL: {}", url);
 
     ResponseEntity<Recommendation[]> svcResult = restTemplate.getForEntity(url, Recommendation[].class);
     LOG.debug("GetPersonRecommentation http-status: {}", svcResult.getStatusCode());
@@ -78,7 +78,7 @@ public class PersonService {
   @HystrixCommand(fallbackMethod = "defaultProductRecommendations")
   public ResponseEntity<Recommendation[]> getProductRecommendations(int personId) {
     String url = "http://product-recommendation-service:8080/recommendations/" + personId;
-    LOG.debug("GetProductRecommendations from URL: {}", url);
+    LOG.info("GetProductRecommendations from URL: {}", url);
 
     ResponseEntity<Recommendation[]> svcResult = restTemplate.getForEntity(url, Recommendation[].class);
     LOG.debug("GetProductRecommentation http-status: {}", svcResult.getStatusCode());
