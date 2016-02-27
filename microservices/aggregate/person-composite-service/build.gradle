@@ -39,7 +39,10 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-undertow")
     compile("org.springframework.boot:spring-boot-starter-actuator")
     compile("org.springframework.cloud:spring-cloud-starter-eureka")
-    compile("org.springframework.cloud:spring-cloud-starter-hystrix")
+    compile("org.springframework.cloud:spring-cloud-starter-hystrix") {
+        exclude module: 'hystrix-javanica'
+    }
+    compile("com.netflix.hystrix:hystrix-javanica:1.5.0-rc.5")
     compile("srai.micro:util:0.0.1-SNAPSHOT")
 
     testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")

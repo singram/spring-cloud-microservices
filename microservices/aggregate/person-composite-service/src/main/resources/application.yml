@@ -7,6 +7,8 @@ hystrix:
       maxQueueSize: -1
       # Queue size rejection threshold (Default: 5)
       queueSizeRejectionThreshold: 5
+    AsyncPersonService:
+      coreSize: 40
   command:
     default:
       circuitBreaker:

@@ -30,32 +30,27 @@ public class AsyncPersonController {
   @RequestMapping("/{personId}")
   public ResponseEntity<PersonComposite> getProduct(@PathVariable int personId) throws InterruptedException, ExecutionException {
 
-    // FIXME. Enabling this will result in a ParameterizedTypeImpl exception and appears to be a limitation of Hystrix futures and
-    // parameterized types
-    //Future<ArrayList<String>> test = asyncPersonService.getStringList(1);
-
-    Future<Person> personResult = asyncPersonService.getPersonAsync(personId);
-    Future<Recommendation[]> recommendationPersonResult = asyncPersonService.getPersonRecommendationsAsync(personId);
-    Future<Recommendation[]> recommendationProductResult = asyncPersonService.getProductRecommendationsAsync(personId);
+    final Future<ResponseEntity<Person>> personResult = asyncPersonService.getPersonAsync(personId);
+    final Future<ResponseEntity<Recommendation[]>> recommendationPersonResult = asyncPersonService.getPersonRecommendationsAsync(personId);
+    final Future<ResponseEntity<Recommendation[]>> recommendationProductResult = asyncPersonService.getProductRecommendationsAsync(personId);
 
     while(!(personResult.isDone() && recommendationPersonResult.isDone() && recommendationProductResult.isDone() ) ) {
       Thread.sleep(1);
     }
 
-    if (personResult.get()== null) {
+    if (personResult.get().getBody()== null) {
       return new ResponseEntity<>(null, HttpStatus.BAD_GATEWAY);
     }
 
-    Person person = personResult.get();
-    Recommendation[] personRecommendations = recommendationPersonResult.get();
-    Recommendation[] productRecommendations = recommendationProductResult.get();
+    final Person person = personResult.get().getBody();
+    final Recommendation[] personRecommendations = recommendationPersonResult.get().getBody();
+    final Recommendation[] productRecommendations = recommendationProductResult.get().getBody();
 
     PersonComposite result = new PersonComposite();
     result.setPerson(person);
     result.setPersonRecommendations(Arrays.asList(personRecommendations));
     result.setProductRecommendations(Arrays.asList(productRecommendations));
-    //  return new ResponseEntity<PersonComposite>(result, personResult.get().getStatusCode());
-    return new ResponseEntity<PersonComposite>(result, HttpStatus.ACCEPTED);
+    return new ResponseEntity<PersonComposite>(result, personResult.get().getStatusCode());
   }
 
 }

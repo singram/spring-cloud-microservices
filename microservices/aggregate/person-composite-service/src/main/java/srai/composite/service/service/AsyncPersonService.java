@@ -1,10 +1,12 @@
 package srai.composite.service.service;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.netflix.hystrix.contrib.javanica.command.AsyncResult;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import srai.common.micro.service.model.Person;
@@ -23,35 +25,20 @@ public class AsyncPersonService extends PersonService {
 
   private static final Logger LOG = LoggerFactory.getLogger(AsyncPersonService.class);
 
-  /*
-  @HystrixCommand(fallbackMethod = "defaultList")
-  public Future<ArrayList<String>> getStringList(final int someId) {
-    return new AsyncResult<ArrayList<String>>() {
+  @HystrixCommand(fallbackMethod = "defaultPerson", commandProperties = {
+      @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "1000") } )
+  public Future<ResponseEntity<Person>> getPersonAsync(final int personId) {
+    return new AsyncResult<ResponseEntity<Person>>() {
       @Override
-      public ArrayList<String> invoke() {
-        return new ArrayList<String>();
+      public ResponseEntity<Person> invoke() {
+        return getPerson(personId);
       }
     };
   }
 
-  public ArrayList<String> defaultList(final int someId) {
-    return null;
-  }
-   */
-
-  @HystrixCommand(fallbackMethod = "defaultPerson")
-  public Future<Person> getPersonAsync(final int personId) {
-    return new AsyncResult<Person>() {
-      @Override
-      public Person invoke() {
-        return getPerson(personId).getBody();
-      }
-    };
-  }
-
-  public Person defaultPerson(int persontId, Throwable e) {
+  public ResponseEntity<Person> defaultPerson(int persontId, Throwable e) {
     LOG.warn("Using fallback method for person-service. {}", e.getMessage());
-    return null;
+    return super.defaultPerson(persontId);
   }
 
   // ---------------------- //
@@ -59,17 +46,17 @@ public class AsyncPersonService extends PersonService {
   // ---------------------- //
 
   @HystrixCommand(fallbackMethod = "defaultPersonRecommendationsAsync")
-  public Future<Recommendation[]> getPersonRecommendationsAsync(final int personId) {
-    return new AsyncResult<Recommendation[]>() {
+  public Future<ResponseEntity<Recommendation[]>> getPersonRecommendationsAsync(final int personId) {
+    return new AsyncResult<ResponseEntity<Recommendation[]>>() {
       @Override
-      public Recommendation[] invoke() {
-        return getPersonRecommendations(personId).getBody();
+      public ResponseEntity<Recommendation[]> invoke() {
+        return getPersonRecommendations(personId);
       }
     };
   }
 
-  public Recommendation[] defaultPersonRecommendationsAsync(int persontId) {
-    return defaultPersonRecommendations(persontId).getBody();
+  public ResponseEntity<Recommendation[]> defaultPersonRecommendationsAsync(int persontId) {
+    return defaultPersonRecommendations(persontId);
   }
 
   // ---------------------- //
@@ -77,17 +64,17 @@ public class AsyncPersonService extends PersonService {
   // ---------------------- //
 
   @HystrixCommand(fallbackMethod = "defaultProductRecommendationsAsync")
-  public Future<Recommendation[]> getProductRecommendationsAsync(final int personId) {
-    return new AsyncResult<Recommendation[]>() {
+  public Future<ResponseEntity<Recommendation[]>> getProductRecommendationsAsync(final int personId) {
+    return new AsyncResult<ResponseEntity<Recommendation[]>>() {
       @Override
-      public Recommendation[] invoke() {
-        return getProductRecommendations(personId).getBody();
+      public ResponseEntity<Recommendation[]> invoke() {
+        return getProductRecommendations(personId);
       }
     };
   }
 
-  public Recommendation[] defaultProductRecommendationsAsync(int persontId) {
-    return defaultProductRecommendations(persontId).getBody();
+  public ResponseEntity<Recommendation[]> defaultProductRecommendationsAsync(int persontId) {
+    return defaultProductRecommendations(persontId);
   }
 
 }
