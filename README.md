@@ -122,6 +122,10 @@ To accelerate local development, it is recommended to run gradle daemonized.  Th
 - https://github.com/Xorlev/crankshaftd
 - http://1.bp.blogspot.com/-JaBO-Dk9oNI/VMzVWnxeP_I/AAAAAAAABOA/bYBwau60AVw/s1600/hystrix-grafana.png
 
+### Instrumentation
+https://objectpartners.com/2015/05/07/intelligent-microservice-metrics-with-spring-boot-and-statsd/
+https://github.com/ryantenney/metrics-spring
+
 ### Docker host Monitoring
 - https://www.brianchristner.io/how-to-setup-docker-monitoring/
 - https://www.brianchristner.io/how-to-setup-prometheus-docker-monitoring/

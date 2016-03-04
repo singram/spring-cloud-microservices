@@ -44,8 +44,8 @@ public class PersonService {
     return svcResult;
   }
 
-  public ResponseEntity<Person> defaultPerson(int persontId) {
-    LOG.warn("Using fallback method for person-service");
+  public ResponseEntity<Person> defaultPerson(int persontId, Throwable t) {
+    LOG.warn("Using fallback method for person-service {} ", t.getMessage());
     return new ResponseEntity<>(null, HttpStatus.BAD_GATEWAY);
   }
 
@@ -65,8 +65,8 @@ public class PersonService {
     return svcResult;
   }
 
-  public ResponseEntity<Recommendation[]> defaultPersonRecommendations(int persontId) {
-    LOG.warn("Using fallback method for person-recommendations-service");
+  public ResponseEntity<Recommendation[]> defaultPersonRecommendations(int persontId, Throwable t) {
+    LOG.warn("Using fallback method for person-recommendations-service {}", t.getMessage());
     Recommendation[] emptyArray = {};
     return new ResponseEntity<Recommendation[]>(emptyArray, HttpStatus.BAD_GATEWAY);
   }
@@ -87,8 +87,8 @@ public class PersonService {
     return svcResult;
   }
 
-  public ResponseEntity<Recommendation[]> defaultProductRecommendations(int persontId) {
-    LOG.warn("Using fallback method for product-recommendations-service");
+  public ResponseEntity<Recommendation[]> defaultProductRecommendations(int persontId, Throwable t) {
+    LOG.warn("Using fallback method for product-recommendations-service {}", t.getMessage());
     Recommendation[] emptyArray = {};
     return new ResponseEntity<Recommendation[]>(emptyArray, HttpStatus.BAD_GATEWAY);
   }

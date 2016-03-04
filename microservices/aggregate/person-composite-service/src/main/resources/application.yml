@@ -1,3 +1,4 @@
+
 hystrix:
   threadpool: # Treadpool Hystrix commands are executed on
     default:
@@ -13,12 +14,12 @@ hystrix:
     default:
       circuitBreaker:
         sleepWindowInMilliseconds: 10000  # Delay after circuit is tripped before attempts are made again
-        requestVolumeThreshold: 3  # Failures in window to trip circuit
-        #errorThresholdPercentage: 50 # % failures in window to trip circuit
+        #requestVolumeThreshold: 3  # Failures in window to trip circuit
+        errorThresholdPercentage: 50 # % failures in window to trip circuit
       execution:
         timeout:
           enabled: true # Enable/ disable timeout protection
         isolation:
           strategy: THREAD
           thread:
-            timeoutInMilliseconds: 2000 # Default timeout per execution attempt 
+            timeoutInMilliseconds: 1000 # Default timeout per execution attempt 

@@ -1,0 +1,37 @@
+./ms run
+./ms redis_load_data
+./ms stats
+./ms portals
+
+
+curl localhost:8081/metrics | jq .
+curl localhost:8081/health | jq .
+curl localhost:8083/health | jq .
+
+curl -v localhost:8080/person/5 | jq .
+curl -v localhost:8081/recommendations/5 | jq .
+curl -v localhost:8082/recommendations/5 | jq .
+curl -v localhost:8083/5 | jq .
+
+ab -n 100000 -c 15 -l http://localhost:8083/2
+
+
+curl  "localhost:8081/pause" | jq .
+curl  "localhost:8081/unpause" | jq .
+curl  "localhost:8081/set-processing-time?minMs=200&maxMs=500" | jq .
+curl  "localhost:8081/set-processing-time?minMs=500&maxMs=1500" | jq .
+curl  "localhost:8081/set-processing-time?minMs=1500&maxMs=1500" | jq .
+curl  "localhost:8081/set-processing-time?minMs=0&maxMs=0" | jq .
+curl  "localhost:8081/set-error?percentage=5" | jq .
+curl  "localhost:8081/set-error?percentage=50" | jq .
+curl  "localhost:8081/set-error?percentage=0" | jq .
+
+curl -v localhost:8083/asyn5 | jq .
+ab -n 100000 -c 15 -l http://localhost:8083/async/2
+
+# Thread limiting
+Edit code
+
+docker-compose stop person-composite-service
+cd microservices/aggregate/person-composite-service/ && ./gradlew clean build && cd -
+docker-compose up person-composite-service

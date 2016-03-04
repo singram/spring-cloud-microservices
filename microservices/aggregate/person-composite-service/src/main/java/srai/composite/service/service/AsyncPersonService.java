@@ -1,7 +1,6 @@
 package srai.composite.service.service;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.netflix.hystrix.contrib.javanica.command.AsyncResult;
 
 import org.slf4j.Logger;
@@ -25,8 +24,8 @@ public class AsyncPersonService extends PersonService {
 
   private static final Logger LOG = LoggerFactory.getLogger(AsyncPersonService.class);
 
-  @HystrixCommand(fallbackMethod = "defaultPerson"
-      , groupKey="personRateLimiter", threadPoolProperties = { @HystrixProperty(name = "coreSize", value = "5") }
+  @HystrixCommand(fallbackMethod = "defaultAsyncPerson"
+      //      , groupKey="personRateLimiter", threadPoolProperties = { @HystrixProperty(name = "coreSize", value = "5") }
       )
   public Future<ResponseEntity<Person>> getPersonAsync(final int personId) {
     return new AsyncResult<ResponseEntity<Person>>() {
@@ -37,9 +36,9 @@ public class AsyncPersonService extends PersonService {
     };
   }
 
-  public ResponseEntity<Person> defaultPerson(int persontId, Throwable e) {
-    LOG.warn("Using fallback method for person-service. {}", e.getMessage());
-    return super.defaultPerson(persontId);
+  public ResponseEntity<Person> defaultAsyncPerson(int persontId, Throwable t) {
+    LOG.warn("Using fallback method for async-person-service. {}", t.getMessage());
+    return defaultPerson(persontId, t);
   }
 
   // ---------------------- //
@@ -47,7 +46,7 @@ public class AsyncPersonService extends PersonService {
   // ---------------------- //
 
   @HystrixCommand(fallbackMethod = "defaultPersonRecommendationsAsync"
-      , commandProperties = { @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "1000") }
+      //      , commandProperties = { @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "500") }
       )
   public Future<ResponseEntity<Recommendation[]>> getPersonRecommendationsAsync(final int personId) {
     return new AsyncResult<ResponseEntity<Recommendation[]>>() {
@@ -58,9 +57,9 @@ public class AsyncPersonService extends PersonService {
     };
   }
 
-  public ResponseEntity<Recommendation[]> defaultPersonRecommendationsAsync(int persontId, Throwable e) {
-    LOG.warn("Using fallback method for person-recommendation-service. {}", e.getMessage());
-    return defaultPersonRecommendations(persontId);
+  public ResponseEntity<Recommendation[]> defaultPersonRecommendationsAsync(int persontId, Throwable t) {
+    LOG.warn("Using fallback method for person-recommendation-service. {}", t.getMessage());
+    return defaultPersonRecommendations(persontId, t);
   }
 
   // ---------------------- //
@@ -77,9 +76,9 @@ public class AsyncPersonService extends PersonService {
     };
   }
 
-  public ResponseEntity<Recommendation[]> defaultProductRecommendationsAsync(int persontId, Throwable e) {
-    LOG.warn("Using fallback method for product-recommendation-service. {}", e.getMessage());
-    return defaultProductRecommendations(persontId);
+  public ResponseEntity<Recommendation[]> defaultProductRecommendationsAsync(int persontId, Throwable t) {
+    LOG.warn("Using fallback method for product-recommendation-service. {}", t.getMessage());
+    return defaultProductRecommendations(persontId, t);
   }
 
 }
