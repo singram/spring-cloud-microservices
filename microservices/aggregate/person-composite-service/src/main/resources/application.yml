@@ -1,3 +1,10 @@
+#spring:
+#  metrics:
+#    export:
+#      statsd:
+#        host: grafana
+#        port: 8125
+#        prefix: composite_service_x
 hystrix:
   threadpool: # Treadpool Hystrix commands are executed on
     default:

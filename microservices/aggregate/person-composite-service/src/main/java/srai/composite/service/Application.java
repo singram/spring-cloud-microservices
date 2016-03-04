@@ -1,9 +1,13 @@
 package srai.composite.service;
 
+import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.graphite.Graphite;
 import com.codahale.metrics.graphite.GraphiteReporter;
 import com.codahale.metrics.graphite.GraphiteSender;
+import com.codahale.metrics.jvm.GarbageCollectorMetricSet;
+import com.codahale.metrics.jvm.MemoryUsageGaugeSet;
+import com.codahale.metrics.jvm.ThreadStatesGaugeSet;
 import com.netflix.hystrix.contrib.codahalemetricspublisher.HystrixCodaHaleMetricsPublisher;
 import com.netflix.hystrix.strategy.HystrixPlugins;
 import com.netflix.hystrix.strategy.metrics.HystrixMetricsPublisher;
@@ -37,15 +41,26 @@ public class Application {
     return publisher;
   }
 
-  //  @Bean
-  //  public ConsoleReporter consoleReporter(MetricRegistry metricRegistry) {
-  //    ConsoleReporter reporter = ConsoleReporter.forRegistry(metricRegistry)
-  //        .convertRatesTo(TimeUnit.SECONDS)
-  //        .convertDurationsTo(TimeUnit.MILLISECONDS)
-  //        .build();
-  //    reporter.start(1, TimeUnit.SECONDS);
-  //    return reporter;
-  //  }
+  @Bean
+  public MetricRegistry metricRegistry() {
+    final MetricRegistry metricRegistry = new MetricRegistry();
+
+    //jvm metrics
+    metricRegistry.register("jvm.gc",new GarbageCollectorMetricSet());
+    metricRegistry.register("jvm.mem",new MemoryUsageGaugeSet());
+    metricRegistry.register("jvm.thread-states",new ThreadStatesGaugeSet());
+
+    return metricRegistry;
+  }
+  @Bean
+  public ConsoleReporter consoleReporter(MetricRegistry metricRegistry) {
+    ConsoleReporter reporter = ConsoleReporter.forRegistry(metricRegistry)
+        .convertRatesTo(TimeUnit.SECONDS)
+        .convertDurationsTo(TimeUnit.MILLISECONDS)
+        .build();
+    reporter.start(1, TimeUnit.SECONDS);
+    return reporter;
+  }
 
   @Bean
   public GraphiteReporter graphiteReporter(MetricRegistry metricRegistry) {
