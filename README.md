@@ -120,6 +120,7 @@ To accelerate local development, it is recommended to run gradle daemonized.  Th
 - https://github.com/Netflix/Hystrix/wiki/Configuration
 - https://ahus1.github.io/hystrix-examples/manual.html
 - https://github.com/Xorlev/crankshaftd
+- http://1.bp.blogspot.com/-JaBO-Dk9oNI/VMzVWnxeP_I/AAAAAAAABOA/bYBwau60AVw/s1600/hystrix-grafana.png
 
 ### Docker host Monitoring
 - https://www.brianchristner.io/how-to-setup-docker-monitoring/

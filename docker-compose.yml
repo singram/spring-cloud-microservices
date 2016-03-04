@@ -39,6 +39,7 @@ person-composite-service:
     - person-service
     - person-recommendation-service
     - product-recommendation-service
+    - grafana
 
 person-service-redis:
   image: redis:3.0.7
@@ -87,3 +88,11 @@ turbine-service:
   links:
     - eureka-service
     - person-composite-service
+
+grafana:
+  image: kamon/grafana_graphite
+  ports:
+    - 80:80
+    - 81:81
+    - 8125:8125/udp
+    - 8126:8126
