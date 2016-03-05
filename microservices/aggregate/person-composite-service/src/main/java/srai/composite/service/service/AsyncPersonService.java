@@ -1,7 +1,6 @@
 package srai.composite.service.service;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.netflix.hystrix.contrib.javanica.command.AsyncResult;
 
 import org.slf4j.Logger;
@@ -26,7 +25,7 @@ public class AsyncPersonService extends PersonService {
   private static final Logger LOG = LoggerFactory.getLogger(AsyncPersonService.class);
 
   @HystrixCommand(fallbackMethod = "defaultPerson"
-      , groupKey="personRateLimiter", threadPoolProperties = { @HystrixProperty(name = "coreSize", value = "5") }
+      //      , groupKey="personRateLimiter", threadPoolProperties = { @HystrixProperty(name = "coreSize", value = "5") }
       )
   public Future<ResponseEntity<Person>> getPersonAsync(final int personId) {
     return new AsyncResult<ResponseEntity<Person>>() {
@@ -47,7 +46,7 @@ public class AsyncPersonService extends PersonService {
   // ---------------------- //
 
   @HystrixCommand(fallbackMethod = "defaultPersonRecommendationsAsync"
-      , commandProperties = { @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "1000") }
+      //      , commandProperties = { @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "500") }
       )
   public Future<ResponseEntity<Recommendation[]>> getPersonRecommendationsAsync(final int personId) {
     return new AsyncResult<ResponseEntity<Recommendation[]>>() {

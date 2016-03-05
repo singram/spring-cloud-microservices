@@ -28,4 +28,4 @@ hystrix:
         isolation:
           strategy: THREAD
           thread:
-            timeoutInMilliseconds: 2000 # Default timeout per execution attempt 
+            timeoutInMilliseconds: 1000 # Default timeout per execution attempt 
