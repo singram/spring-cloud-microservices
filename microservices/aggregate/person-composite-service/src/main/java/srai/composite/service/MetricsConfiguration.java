@@ -5,6 +5,7 @@ import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.graphite.Graphite;
 import com.codahale.metrics.graphite.GraphiteReporter;
 import com.codahale.metrics.graphite.GraphiteSender;
+import com.codahale.metrics.jvm.ClassLoadingGaugeSet;
 import com.codahale.metrics.jvm.GarbageCollectorMetricSet;
 import com.codahale.metrics.jvm.MemoryUsageGaugeSet;
 import com.codahale.metrics.jvm.ThreadStatesGaugeSet;
@@ -35,6 +36,7 @@ public class MetricsConfiguration {
     final MetricRegistry metricRegistry = new MetricRegistry();
 
     //jvm metrics
+    metricRegistry.register("jvm.classloading",new ClassLoadingGaugeSet());
     metricRegistry.register("jvm.gc",new GarbageCollectorMetricSet());
     metricRegistry.register("jvm.mem",new MemoryUsageGaugeSet());
     metricRegistry.register("jvm.thread-states",new ThreadStatesGaugeSet());

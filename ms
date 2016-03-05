@@ -60,7 +60,11 @@ case $CMD in
         ;;
     "portals")
         echo "Viewing management portals..."
-        firefox http://localhost:8001 http://localhost:8000/hystrix http://localhost:8000/hystrix/monitor?stream=http%3A%2F%2Fperson-composite-service%3A8080%2Fhystrix.stream http://localhost:8000/hystrix/monitor?stream=http%3A%2F%2Fturbine-service%3A8989%2Fturbine.stream &
+        firefox http://localhost:8001 \
+                http://localhost:8000/hystrix \
+                http://localhost:8000/hystrix/monitor?stream=http%3A%2F%2Fperson-composite-service%3A8080%2Fhystrix.stream \
+                http://localhost:8000/hystrix/monitor?stream=http%3A%2F%2Fturbine-service%3A8989%2Fturbine.stream \
+                http://localhost:80/ &
         ;;
     "purge")
         echo "Removing api containers and images..."
