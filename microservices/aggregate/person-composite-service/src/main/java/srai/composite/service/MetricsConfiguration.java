@@ -1,6 +1,5 @@
 package srai.composite.service;
 
-import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.graphite.Graphite;
 import com.codahale.metrics.graphite.GraphiteReporter;
@@ -43,15 +42,16 @@ public class MetricsConfiguration {
 
     return metricRegistry;
   }
-  @Bean
-  public ConsoleReporter consoleReporter(MetricRegistry metricRegistry) {
-    ConsoleReporter reporter = ConsoleReporter.forRegistry(metricRegistry)
-        .convertRatesTo(TimeUnit.SECONDS)
-        .convertDurationsTo(TimeUnit.MILLISECONDS)
-        .build();
-    reporter.start(1, TimeUnit.SECONDS);
-    return reporter;
-  }
+
+  //  @Bean
+  //  public ConsoleReporter consoleReporter(MetricRegistry metricRegistry) {
+  //    ConsoleReporter reporter = ConsoleReporter.forRegistry(metricRegistry)
+  //        .convertRatesTo(TimeUnit.SECONDS)
+  //        .convertDurationsTo(TimeUnit.MILLISECONDS)
+  //        .build();
+  //    reporter.start(1, TimeUnit.SECONDS);
+  //    return reporter;
+  //  }
 
   @Bean
   public GraphiteReporter graphiteReporter(MetricRegistry metricRegistry) {

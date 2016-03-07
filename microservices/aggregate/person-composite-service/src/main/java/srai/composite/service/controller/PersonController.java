@@ -36,7 +36,7 @@ public class PersonController {
     ResponseEntity<Person> personResult = personService.getPerson(personId);
 
     if (!personResult.getStatusCode().is2xxSuccessful()) {
-      LOG.error("Could not retrieve person {} from person-service.  Http code - ", personId, personResult.getStatusCode());
+      LOG.error("Could not retrieve person {} from person-service.  Http code - {}", personId, personResult.getStatusCode());
       return new ResponseEntity<>(null, personResult.getStatusCode());
     }
 
@@ -46,7 +46,7 @@ public class PersonController {
       ResponseEntity<Recommendation[]> recommendationResult = personService.getPersonRecommendations(personId);
       personRecommendations = recommendationResult.getBody();
     } catch (Throwable t) {
-      LOG.error("getPersonRecommendations error", t);
+      LOG.error("getPersonRecommendations error ", t);
       throw t;
     }
 
@@ -56,7 +56,7 @@ public class PersonController {
       ResponseEntity<Recommendation[]> recommendationResult = personService.getProductRecommendations(personId);
       productRecommendations = recommendationResult.getBody();
     } catch (Throwable t) {
-      LOG.error("getProductRecommendations error", t);
+      LOG.error("getProductRecommendations error ", t);
       throw t;
     }
 

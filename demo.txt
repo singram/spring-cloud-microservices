@@ -1,19 +1,19 @@
-docker-compose up
+./ms run
+./ms redis_load_data
 ./ms stats
 ./ms portals
 
-ab -n 100000 -c 15 -l http://localhost:8083/2
 
 curl localhost:8081/metrics | jq .
 curl localhost:8081/health | jq .
-curl localhost:8081/info | jq .
 curl localhost:8083/health | jq .
-curl localhost:8083/info | jq .
 
 curl -v localhost:8080/person/5 | jq .
 curl -v localhost:8081/recommendations/5 | jq .
 curl -v localhost:8082/recommendations/5 | jq .
 curl -v localhost:8083/5 | jq .
+
+ab -n 100000 -c 15 -l http://localhost:8083/2
 
 
 curl  "localhost:8081/pause" | jq .

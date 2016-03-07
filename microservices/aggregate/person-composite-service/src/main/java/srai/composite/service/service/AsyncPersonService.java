@@ -24,7 +24,7 @@ public class AsyncPersonService extends PersonService {
 
   private static final Logger LOG = LoggerFactory.getLogger(AsyncPersonService.class);
 
-  @HystrixCommand(fallbackMethod = "defaultPerson"
+  @HystrixCommand(fallbackMethod = "defaultAsyncPerson"
       //      , groupKey="personRateLimiter", threadPoolProperties = { @HystrixProperty(name = "coreSize", value = "5") }
       )
   public Future<ResponseEntity<Person>> getPersonAsync(final int personId) {
@@ -36,9 +36,9 @@ public class AsyncPersonService extends PersonService {
     };
   }
 
-  public ResponseEntity<Person> defaultPerson(int persontId, Throwable e) {
+  public ResponseEntity<Person> defaultAsyncPerson(int persontId, Throwable e) {
     LOG.warn("Using fallback method for person-service. {}", e.getMessage());
-    return super.defaultPerson(persontId);
+    return defaultPerson(persontId);
   }
 
   // ---------------------- //
