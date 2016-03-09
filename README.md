@@ -65,7 +65,7 @@ To accelerate local development, it is recommended to run gradle daemonized.  Th
 
 1. Build and run the system `./ms build && ./ms run`
 2. Check memory and uptime via `./ms stats`.  When the system is stable and all services have started CPU usage on all processes should be nominal.
-3. Generate some load `ab -n 10000 -c 10 -l http://localhost:8083/[async/]2`
+3. Generate some load `ab -n 10000 -c 10 -l http://localhost:8083/[async/]2`.  There is also a simple JMeter load script under `\configuration`
 4. Adjust performance of underlying services
     `curl  "localhost:808[0-2]/set-processing-time?minMs=1000&maxMs=2000" | jq .`
    or adjust service error rate
@@ -74,9 +74,18 @@ To accelerate local development, it is recommended to run gradle daemonized.  Th
     `docker-compose [un]pause [person-service|person-recommendation-service|product-recommendation-service]`
 5. Observe Hystrix dashboard for impact `./ms portals` (shows eureka, hystrix & turbine dashboards)
 
+### Grafana setup
+
+Hystrix and JVM metrics can be gathered for instrumentation trending and displayed via the following steps
+1. Navigate to `localhost:80` in a browser.  Login is `admin`\`admin`
+2. Create a new data source for graphite.  The url is `http:\\localhost:81`.  Verify connectivity.
+3. Import the two dashboards found under the `\configuration\grafana` directory.  Rememeber to update the time period appropriately.
+
+While Hystric collects metrics which can be pushed via standard means to statsd and other solutions, Turbine does not appear to support the same meterics gathering at this time meaing metrics from all services need to be pushed and centrally aggregated in statsd rather than keys off Turbine which would be prefered.
+
 ### Hystrix notes
 
-- Thread pools are defined by group not by command.
+- Thread pools are defined by group not by command.  Threadpool bulkheads should be considered in the context of sequential call protection vs concurrent
 - Thread pool saturation must be handled outside of Hystrix.  By it's fundamental nature, if there is not a thread in the pool available Hystrix by definition cannot handle it, even if only to use a fallback.
 
 ### Turbine - Hystrix Stream aggregation

@@ -45,6 +45,7 @@
           },
           "lines": true,
           "linewidth": 2,
+          "links": [],
           "nullPointMode": "null as zero",
           "percentage": false,
           "pointradius": 5,
@@ -56,13 +57,13 @@
           "steppedLine": false,
           "targets": [
             {
-              "target": "aliasByMetric(composite_service.PersonService.*.rollingCountSuccess)"
+              "target": "aliasByMetric(sumSeries(composite_service.P*.*.rollingCountSuccess))"
             },
             {
-              "target": "aliasByMetric(composite_service.PersonService.*.rollingCountTimeout)"
+              "target": "aliasByMetric(sumSeries(composite_service.P*.*.rollingCountTimeout))"
             },
             {
-              "target": "aliasByMetric(composite_service.PersonService.*.rollingCountFailure)"
+              "target": "aliasByMetric(sumSeries(composite_service.P*.*.rollingCountFailure))"
             }
           ],
           "timeFrom": null,
@@ -78,8 +79,7 @@
           "y_formats": [
             "short",
             "short"
-          ],
-          "links": []
+          ]
         },
         {
           "aliasColors": {},
@@ -217,12 +217,18 @@
           "steppedLine": false,
           "targets": [
             {
-              "target": "aliasByNode(composite_service.PersonService.*.latencyExecute_mean, 2)"
+              "hide": false,
+              "target": "alias(perSecond(sumSeries(composite_service.HystrixThreadPool.*.totalTaskCount)), 'Task Count')",
+              "textEditor": false
             },
             {
-              "hide": false,
-              "target": "alias(perSecond(composite_service.HystrixThreadPool.PersonService.totalTaskCount), 'Task Count')",
-              "textEditor": false
+              "target": "aliasByNode(composite_service.PersonRecommendationsService.*.latencyExecute_mean, 2)"
+            },
+            {
+              "target": "aliasByNode(composite_service.ProductRecommendationsService.*.latencyExecute_mean, 2)"
+            },
+            {
+              "target": "aliasByNode(composite_service.PersonService.*.latencyExecute_mean, 2)"
             }
           ],
           "timeFrom": null,
@@ -279,6 +285,7 @@
           },
           "lines": true,
           "linewidth": 2,
+          "links": [],
           "nullPointMode": "null as zero",
           "percentage": false,
           "pointradius": 5,
@@ -306,8 +313,7 @@
           "y_formats": [
             "ms",
             "short"
-          ],
-          "links": []
+          ]
         }
       ],
       "title": "New row"
@@ -318,7 +324,7 @@
       "collapse": false,
       "enable": true,
       "notice": false,
-      "now": false,
+      "now": true,
       "refresh_intervals": [
         "5s",
         "10s",
@@ -347,8 +353,8 @@
     }
   ],
   "time": {
-    "from": "2016-03-04T20:24:37.712Z",
-    "to": "2016-03-04T20:58:53.556Z"
+    "from": "now-15m",
+    "to": "now"
   },
   "templating": {
     "list": []
@@ -357,6 +363,6 @@
     "list": []
   },
   "schemaVersion": 6,
-  "version": 5,
+  "version": 1,
   "links": []
 }
