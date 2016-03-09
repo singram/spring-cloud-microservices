@@ -6,6 +6,8 @@ import com.netflix.hystrix.contrib.javanica.command.AsyncResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -23,10 +25,14 @@ public class ProductRecommendationsService {
   @Autowired
   protected RestOperations restTemplate;
 
+  @Autowired
+  private LoadBalancerClient loadBalancer;
+
   @HystrixCommand(fallbackMethod = "defaultProductRecommendations")
   public ResponseEntity<Recommendation[]> getProductRecommendations(int personId) {
-    String url = "http://product-recommendation-service:8080/recommendations/" + personId;
-    LOG.info("GetProductRecommendations from URL: {}", url);
+    ServiceInstance instance = loadBalancer.choose("product-recommendation-service");
+    String url = instance.getUri().toString() + "/recommendations/" + personId;
+    LOG.info("Resolved product-recommendation-service to URL '{}'.", url);
 
     ResponseEntity<Recommendation[]> svcResult = restTemplate.getForEntity(url, Recommendation[].class);
     LOG.debug("GetProductRecommentation http-status: {}", svcResult.getStatusCode());
