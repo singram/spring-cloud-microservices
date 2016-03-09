@@ -42,7 +42,7 @@ To install the 1.6.0:
 
 Install supporting tools
 
-    sudo apt-get install jq apache2-utils
+    sudo apt-get install jq apache2-utils jmeter
 
 ### To run
 
@@ -77,7 +77,8 @@ To accelerate local development, it is recommended to run gradle daemonized.  Th
 ### Grafana setup
 
 Hystrix and JVM metrics can be gathered for instrumentation trending and displayed via the following steps
-1. Navigate to `localhost:80` in a browser.  Login is `admin`\`admin`
+
+1. Navigate to `localhost:80` in a browser.  Login is `admin` \ `admin`
 2. Create a new data source for graphite.  The url is `http:\\localhost:81`.  Verify connectivity.
 3. Import the two dashboards found under the `\configuration\grafana` directory.  Rememeber to update the time period appropriately.
 
