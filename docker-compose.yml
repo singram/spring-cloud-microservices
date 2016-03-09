@@ -8,6 +8,8 @@ person-service:
     - "8080:8080"
   links:
     - person-service-redis
+    - eureka-service
+
 person-recommendation-service:
   build: ./microservices/core/person-recommendation-service/.
   volumes:
@@ -16,6 +18,9 @@ person-recommendation-service:
     - ./microservices/core/person-recommendation-service/build/libs:/build
   ports:
     - "8081:8080"
+  links:
+    - eureka-service
+
 product-recommendation-service:
   build: ./microservices/core/product-recommendation-service/.
   volumes:
@@ -24,6 +29,8 @@ product-recommendation-service:
     - ./microservices/core/product-recommendation-service/build/libs:/build
   ports:
     - "8082:8080"
+  links:
+    - eureka-service
 
 person-composite-service:
   build: ./microservices/aggregate/person-composite-service/.
@@ -36,9 +43,6 @@ person-composite-service:
     - "8083:8080"
   links:
     - eureka-service
-    - person-service
-    - person-recommendation-service
-    - product-recommendation-service
     - grafana
 
 person-service-redis:
@@ -70,9 +74,6 @@ eureka-service:
   ports:
     - "8001:8761"
 
-# NOTES
-#  Sometimes needs to be started last ( docker-compose stop turbine-service && docker-compose up turbine-service
-#  TODO. Remove hostname hack.  Right now ip's are not registered with eureka, just hostnames.
 turbine-service:
   build: ./microservices/support/turbine/.
   volumes:
@@ -87,7 +88,6 @@ turbine-service:
     - "8003:8990"
   links:
     - eureka-service
-    - person-composite-service
 
 grafana:
   image: kamon/grafana_graphite

@@ -1,3 +1,16 @@
 spring:
   application:
     name: product-recommendation-service
+
+eureka:
+  client:
+    healthcheck:
+      enabled: true  # Update Eureka if health check is down (not enabled by default)
+    serviceUrl:
+      defaultZone: http://eureka-service:8761/eureka/    
+  instance:
+    preferIpAddress: true
+    leaseRenewalIntervalInSeconds: 10
+    metadataMap:
+      instanceId: ${${spring.application.name}:${spring.application.instance_id:${random.value}}}
+    
