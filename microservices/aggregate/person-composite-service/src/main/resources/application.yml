@@ -1,25 +1,24 @@
 
 hystrix:
-  threadpool: # Treadpool Hystrix commands are executed on
+  threadpool: # Threadpool Hystrix commands are executed on
     default:
       # Maximum number of concurrent requests when using thread pools (Default: 10)
-      coreSize: 20
+      coreSize: 20 # Undertow has 13 threads by default
       # Maximum LinkedBlockingQueue size - -1 for using SynchronousQueue (Default: -1)
       maxQueueSize: -1
       # Queue size rejection threshold (Default: 5)
       queueSizeRejectionThreshold: 5
-    AsyncPersonService:
-      coreSize: 40
   command:
     default:
       circuitBreaker:
         sleepWindowInMilliseconds: 10000  # Delay after circuit is tripped before attempts are made again
-        #requestVolumeThreshold: 3  # Failures in window to trip circuit
-        errorThresholdPercentage: 50 # % failures in window to trip circuit
+        requestVolumeThreshold: 3  # Failures in window to trip circuit
+        #errorThresholdPercentage: 50 # % failures in window to trip circuit
       execution:
         timeout:
           enabled: true # Enable/ disable timeout protection
         isolation:
           strategy: THREAD
           thread:
+            interruptOnTimeout: true
             timeoutInMilliseconds: 1000 # Default timeout per execution attempt 

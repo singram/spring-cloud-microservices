@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import srai.common.micro.service.model.Person;
 import srai.common.micro.service.model.Recommendation;
+import srai.composite.service.gateway.PersonRecommendationsService;
+import srai.composite.service.gateway.PersonService;
+import srai.composite.service.gateway.ProductRecommendationsService;
 import srai.composite.service.model.PersonComposite;
-import srai.composite.service.service.AsyncPersonService;
 
 import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
@@ -28,22 +30,28 @@ public class AsyncPersonController {
   private static final Logger LOG = LoggerFactory.getLogger(AsyncPersonController.class);
 
   @Autowired
-  AsyncPersonService asyncPersonService;
+  PersonService personService;
+
+  @Autowired
+  PersonRecommendationsService personRecommendationsService;
+
+  @Autowired
+  ProductRecommendationsService productRecommendationsService;
 
   @RequestMapping("/{personId}")
   public ResponseEntity<PersonComposite> getProduct(@PathVariable int personId) throws InterruptedException, ExecutionException {
 
     Future<ResponseEntity<Person>> personResult = null;
     try {
-      personResult = asyncPersonService.getPersonAsync(personId);
+      personResult = personService.getPersonAsync(personId);
     } catch (HystrixRuntimeException e) {
       if (e.getCause().getClass().equals(RejectedExecutionException.class) ) {
         LOG.warn("********************* Person-Service concurrency limit reached *************************)");
         return new ResponseEntity<>(null, HttpStatus.TOO_MANY_REQUESTS);
       }
     }
-    final Future<ResponseEntity<Recommendation[]>> recommendationPersonResult = asyncPersonService.getPersonRecommendationsAsync(personId);
-    final Future<ResponseEntity<Recommendation[]>> recommendationProductResult = asyncPersonService.getProductRecommendationsAsync(personId);
+    final Future<ResponseEntity<Recommendation[]>> recommendationPersonResult = personRecommendationsService.getPersonRecommendationsAsync(personId);
+    final Future<ResponseEntity<Recommendation[]>> recommendationProductResult = productRecommendationsService.getProductRecommendationsAsync(personId);
 
     while(!(personResult.isDone() && recommendationPersonResult.isDone() && recommendationProductResult.isDone() ) ) {
       Thread.sleep(1);

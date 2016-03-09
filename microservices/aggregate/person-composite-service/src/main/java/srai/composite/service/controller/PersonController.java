@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import srai.common.micro.service.model.Person;
 import srai.common.micro.service.model.Recommendation;
+import srai.composite.service.gateway.PersonRecommendationsService;
+import srai.composite.service.gateway.PersonService;
+import srai.composite.service.gateway.ProductRecommendationsService;
 import srai.composite.service.model.PersonComposite;
-import srai.composite.service.service.PersonService;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -23,6 +25,12 @@ public class PersonController {
 
   @Autowired
   PersonService personService;
+
+  @Autowired
+  PersonRecommendationsService personRecommendationsService;
+
+  @Autowired
+  ProductRecommendationsService productRecommendationsService;
 
   @RequestMapping("/")
   public String getProduct() {
@@ -43,7 +51,7 @@ public class PersonController {
     // 2. Get optional person recommendations
     Recommendation[] personRecommendations = null;
     try {
-      ResponseEntity<Recommendation[]> recommendationResult = personService.getPersonRecommendations(personId);
+      ResponseEntity<Recommendation[]> recommendationResult = personRecommendationsService.getPersonRecommendations(personId);
       personRecommendations = recommendationResult.getBody();
     } catch (Throwable t) {
       LOG.error("getPersonRecommendations error {}", t);
@@ -53,7 +61,7 @@ public class PersonController {
     // 3. Get optional product recommendations
     Recommendation[] productRecommendations = null;
     try {
-      ResponseEntity<Recommendation[]> recommendationResult = personService.getProductRecommendations(personId);
+      ResponseEntity<Recommendation[]> recommendationResult = productRecommendationsService.getProductRecommendations(personId);
       productRecommendations = recommendationResult.getBody();
     } catch (Throwable t) {
       LOG.error("getProductRecommendations error ", t);
