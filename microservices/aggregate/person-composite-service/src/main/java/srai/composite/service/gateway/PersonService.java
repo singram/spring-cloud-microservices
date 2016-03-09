@@ -23,9 +23,14 @@ public class PersonService {
   @Autowired
   protected RestOperations restTemplate;
 
+  //  @Autowired
+  //  private LoadBalancerClient loadBalancer;
+
   @HystrixCommand(fallbackMethod = "defaultPerson")
   public ResponseEntity<Person> getPerson(int personId) {
-    String url = "http://person-service:8080/person/" + personId;
+    //    ServiceInstance instance = loadBalancer.choose(serviceId);
+    //    String url = "http://person-service:8080/person/" + personId;
+    String url = "http://person-service/person/" + personId;
     LOG.info("Getperson from URL: {}", url);
 
     ResponseEntity<Person> svcResult = restTemplate.getForEntity(url, Person.class);

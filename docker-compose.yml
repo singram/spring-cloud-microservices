@@ -8,6 +8,8 @@ person-service:
     - "8080:8080"
   links:
     - person-service-redis
+    - eureka-service
+
 person-recommendation-service:
   build: ./microservices/core/person-recommendation-service/.
   volumes:
@@ -16,6 +18,9 @@ person-recommendation-service:
     - ./microservices/core/person-recommendation-service/build/libs:/build
   ports:
     - "8081:8080"
+  links:
+    - eureka-service
+
 product-recommendation-service:
   build: ./microservices/core/product-recommendation-service/.
   volumes:
@@ -24,6 +29,8 @@ product-recommendation-service:
     - ./microservices/core/product-recommendation-service/build/libs:/build
   ports:
     - "8082:8080"
+  links:
+    - eureka-service
 
 person-composite-service:
   build: ./microservices/aggregate/person-composite-service/.
