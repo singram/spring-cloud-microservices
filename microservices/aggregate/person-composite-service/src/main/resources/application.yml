@@ -1,4 +1,11 @@
-
+feign:
+  hystrix:
+    enabled: false # Integration is limited.  Deliberately disabled for demo purposes
+logging:
+  level:
+    project:
+      person-service:
+        PersonService: WARN # Only reacts to DEBUG
 hystrix:
   threadpool: # Threadpool Hystrix commands are executed on
     default:

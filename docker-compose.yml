@@ -96,3 +96,18 @@ grafana:
     - 81:81
     - 8125:8125/udp
     - 8126:8126
+
+probe:
+  image: weaveworks/scope:0.13.1
+  net: "host"
+  pid: "host"
+  privileged: true
+  environment:
+    CHECKPOINT_DISABLE: true
+  labels:
+    - "works.weave.role=system"
+  volumes:
+    - "/var/run/docker.sock:/var/run/docker.sock:rw"
+  command:
+    - "--probe.docker"
+    - "true"

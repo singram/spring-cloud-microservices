@@ -3,7 +3,7 @@ spring:
     name: person-composite-service
     
 eureka:
-  client:
+  client: # Refreshes automatically every 30 seconds
     healthcheck:
       enabled: true  # Update Eureka if health check is down (not enabled by default)
     serviceUrl:
