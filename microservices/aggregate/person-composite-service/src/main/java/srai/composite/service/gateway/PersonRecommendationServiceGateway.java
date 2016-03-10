@@ -6,39 +6,26 @@ import com.netflix.hystrix.contrib.javanica.command.AsyncResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.ServiceInstance;
-import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestOperations;
 
 import srai.common.micro.service.model.Recommendation;
+import srai.composite.service.gateway.service.PersonRecommendationService;
 
 import java.util.concurrent.Future;
 
 @Service
-public class PersonRecommendationsService {
+public class PersonRecommendationServiceGateway {
 
-  private static final Logger LOG = LoggerFactory.getLogger(PersonRecommendationsService.class);
-
-  @Autowired
-  protected RestOperations restTemplate;
+  private static final Logger LOG = LoggerFactory.getLogger(PersonRecommendationServiceGateway.class);
 
   @Autowired
-  private LoadBalancerClient loadBalancer;
+  private PersonRecommendationService personRecommendationService;
 
   @HystrixCommand(fallbackMethod = "defaultPersonRecommendations")
   public ResponseEntity<Recommendation[]> getPersonRecommendations(int personId) {
-    ServiceInstance instance = loadBalancer.choose("person-recommendation-service");
-    String url = instance.getUri().toString() + "/recommendations/" + personId;
-    LOG.info("Resolved person-recommendation-service to URL '{}'.", url);
-
-    ResponseEntity<Recommendation[]> svcResult = restTemplate.getForEntity(url, Recommendation[].class);
-    LOG.debug("GetPersonRecommentation http-status: {}", svcResult.getStatusCode());
-    LOG.debug("GetPersonRecommentation.recommentdation count: {}", svcResult.getBody().length);
-
-    return svcResult;
+    return personRecommendationService.getRecommendations(personId);
   }
 
   @HystrixCommand(fallbackMethod = "defaultPersonRecommendations"

@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import srai.common.micro.service.model.Person;
 import srai.common.micro.service.model.Recommendation;
-import srai.composite.service.gateway.PersonRecommendationsService;
-import srai.composite.service.gateway.PersonService;
-import srai.composite.service.gateway.ProductRecommendationsService;
+import srai.composite.service.gateway.PersonRecommendationServiceGateway;
+import srai.composite.service.gateway.PersonServiceGateway;
+import srai.composite.service.gateway.ProductRecommendationServiceGateway;
 import srai.composite.service.model.PersonComposite;
 
 import java.util.Arrays;
@@ -24,13 +24,13 @@ public class PersonController {
   private static final Logger LOG = LoggerFactory.getLogger(PersonController.class);
 
   @Autowired
-  PersonService personService;
+  PersonServiceGateway personServiceGateway;
 
   @Autowired
-  PersonRecommendationsService personRecommendationsService;
+  PersonRecommendationServiceGateway personRecommendationsServiceGateway;
 
   @Autowired
-  ProductRecommendationsService productRecommendationsService;
+  ProductRecommendationServiceGateway productRecommendationsServiceGateway;
 
   @RequestMapping("/")
   public String getProduct() {
@@ -41,7 +41,7 @@ public class PersonController {
   public ResponseEntity<PersonComposite> getProduct(@PathVariable int personId) {
 
     // 1. First get mandatory product information
-    ResponseEntity<Person> personResult = personService.getPerson(personId);
+    ResponseEntity<Person> personResult = personServiceGateway.getPerson(personId);
 
     if (!personResult.getStatusCode().is2xxSuccessful()) {
       LOG.error("Could not retrieve person {} from person-service.  Http code - {}", personId, personResult.getStatusCode());
@@ -51,7 +51,7 @@ public class PersonController {
     // 2. Get optional person recommendations
     Recommendation[] personRecommendations = null;
     try {
-      ResponseEntity<Recommendation[]> recommendationResult = personRecommendationsService.getPersonRecommendations(personId);
+      ResponseEntity<Recommendation[]> recommendationResult = personRecommendationsServiceGateway.getPersonRecommendations(personId);
       personRecommendations = recommendationResult.getBody();
     } catch (Throwable t) {
       LOG.error("getPersonRecommendations error {}", t);
@@ -61,7 +61,7 @@ public class PersonController {
     // 3. Get optional product recommendations
     Recommendation[] productRecommendations = null;
     try {
-      ResponseEntity<Recommendation[]> recommendationResult = productRecommendationsService.getProductRecommendations(personId);
+      ResponseEntity<Recommendation[]> recommendationResult = productRecommendationsServiceGateway.getProductRecommendations(personId);
       productRecommendations = recommendationResult.getBody();
     } catch (Throwable t) {
       LOG.error("getProductRecommendations error ", t);

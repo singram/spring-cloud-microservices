@@ -2,10 +2,10 @@
 Experiments in spring cloud and the Netflix OSS stack
 
 ## Areas to experiment in
-- Hystrix
+- Hystrix (DONE)
 - Zuul
 - Feign
-- Eureka/Consul
+- Eureka (DONE)/Consul
 - Vault
 - Dynamic configuration
 

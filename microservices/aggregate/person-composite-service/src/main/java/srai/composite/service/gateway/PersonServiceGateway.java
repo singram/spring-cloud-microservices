@@ -6,39 +6,26 @@ import com.netflix.hystrix.contrib.javanica.command.AsyncResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.ServiceInstance;
-import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestOperations;
 
 import srai.common.micro.service.model.Person;
+import srai.composite.service.gateway.service.PersonService;
 
 import java.util.concurrent.Future;
 
 @Service
-public class PersonService {
+public class PersonServiceGateway {
 
-  private static final Logger LOG = LoggerFactory.getLogger(PersonService.class);
-
-  @Autowired
-  protected RestOperations restTemplate;
+  private static final Logger LOG = LoggerFactory.getLogger(PersonServiceGateway.class);
 
   @Autowired
-  private LoadBalancerClient loadBalancer;
+  private PersonService personService;
 
   @HystrixCommand(fallbackMethod = "defaultPerson")
   public ResponseEntity<Person> getPerson(int personId) {
-    ServiceInstance instance = loadBalancer.choose("person-service");
-    String url = instance.getUri().toString() + "/person/" + personId;
-    LOG.info("Resolved person-service to URL '{}'.", url);
-
-    ResponseEntity<Person> svcResult = restTemplate.getForEntity(url, Person.class);
-    LOG.debug("Getperson http-status: {}", svcResult.getStatusCode());
-    LOG.debug("Getperson.id: {}", svcResult.getBody().getId());
-
-    return svcResult;
+    return personService.getPerson(personId);
   }
 
   @HystrixCommand(fallbackMethod = "defaultPerson"
