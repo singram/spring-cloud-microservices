@@ -8,6 +8,7 @@ Experiments in spring cloud and the Netflix OSS stack
 - Eureka (DONE)/Consul
 - Vault
 - Dynamic configuration
+- ELK (DONE)
 
 ## Setup
 
@@ -45,6 +46,10 @@ Install supporting tools
     sudo apt-get install jq apache2-utils jmeter
 
 ### To run
+
+Start the ELK service which receives all docker logs
+
+    ./ms run_elk
 
 Execute the following to run the services.
 
@@ -95,6 +100,18 @@ While Hystric collects metrics which can be pushed via standard means to statsd 
  - Spring Cloud Turbine will support Consul on next release
 - Eureka client versions referenced in 1.0.6 are incompatible with the Brixton.M4 Eureka service and should be excluded.
 
+### ELK Notes
+
+- ELK is available to analyse the main spring boot application logs
+- This is acheived via the docker GELF log driver in a trivially simple manner
+
+#### ELK CAVEATS
+- Solution requires communication through docker host
+- Soltuion requires ELK to be available before dependant containers are started
+- GELF is not secure on the wire
+- GELF is less problematic using UDP and as such is not guarenteed to loose messages
+- Current setup is lossy.  If ELK is down messages will be lost
+
 ### Eureka Notes
 
 - Clients are now auto-deregistered upon shutdown
@@ -133,8 +150,8 @@ While Hystric collects metrics which can be pushed via standard means to statsd 
 - http://1.bp.blogspot.com/-JaBO-Dk9oNI/VMzVWnxeP_I/AAAAAAAABOA/bYBwau60AVw/s1600/hystrix-grafana.png
 
 ### Instrumentation
-https://objectpartners.com/2015/05/07/intelligent-microservice-metrics-with-spring-boot-and-statsd/
-https://github.com/ryantenney/metrics-spring
+- https://objectpartners.com/2015/05/07/intelligent-microservice-metrics-with-spring-boot-and-statsd/
+- https://github.com/ryantenney/metrics-spring
 
 ### Docker host Monitoring
 - https://www.brianchristner.io/how-to-setup-docker-monitoring/
@@ -145,6 +162,13 @@ https://github.com/ryantenney/metrics-spring
 - http://dak1n1.com/blog/14-http-load-generate/
 - http://gatling.io/#/
 - https://blazemeter.com/blog/open-source-load-testing-tools-which-one-should-you-use
+
+### ELK
+- http://elk-docker.readthedocs.org/#running-with-docker-compose
+- http://nathanleclaire.com/blog/2015/04/27/automating-docker-logging-elasticsearch-logstash-kibana-and-logspout/
+- https://github.com/gliderlabs/logspout
+- http://www.labouisse.com/how-to/2015/09/14/elk-and-docker-1-8/
+- http://www.labouisse.com/how-to/2015/09/23/elk-docker-and-spring-boot/
 
 ### Undertow vs Tomcat
 - http://www.alexecollins.com/spring-boot-performance/

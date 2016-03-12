@@ -5,17 +5,20 @@ shift
 PARAMS=$*
 CURRENT_BRANCH_NAME=`git rev-parse --abbrev-ref HEAD`
 SCRIPT_NAME=ms
+export DOCKER_HOST_IP=`ifconfig docker0 | grep "inet addr" | awk -F'[: ]+' '{ print $4 }'`
 
 function help {
     echo "Usage:"
     echo "    ./${SCRIPT_NAME} build"
     echo "    ./${SCRIPT_NAME} clean"
+    echo "    ./${SCRIPT_NAME} docker_host_ip"
     echo "    ./${SCRIPT_NAME} redis_clear"
     echo "    ./${SCRIPT_NAME} redis_load_data"
     echo "    ./${SCRIPT_NAME} redis_monitor"
     echo "    ./${SCRIPT_NAME} portals"
     echo "    ./${SCRIPT_NAME} purge"
     echo "    ./${SCRIPT_NAME} purge_all"
+    echo "    ./${SCRIPT_NAME} run_elk"
     echo "    ./${SCRIPT_NAME} run"
     echo "    ./${SCRIPT_NAME} stats"
     echo
@@ -42,6 +45,9 @@ case $CMD in
         echo "Removing unneeded containers and images..."
         docker rm `docker ps --no-trunc -aq`
         docker images -q --filter "dangling=true" | xargs docker rmi
+        ;;
+    "docker_host_ip")
+        echo $DOCKER_HOST_IP
         ;;
     "help")
         help
@@ -80,6 +86,10 @@ case $CMD in
     "run")
         echo "Starting services..."
         exec docker-compose up
+        ;;
+    "run_elk")
+        echo "Starting services..."
+        exec docker-compose -f docker-compose-elk.yml up
         ;;
     "stats")
         echo "Displaying docker stats..."
