@@ -1,0 +1,35 @@
+elasticsearch:
+  image: elasticsearch
+#  volumes_from:
+#    - elasticsearchData
+  ports:
+    - "9200"
+
+# elasticsearchData:
+#   image: busybox
+#   command: "true"
+#   volumes:
+#     - /usr/share/elasticsearch/data
+
+
+logstash:
+  image: logstash
+  expose:
+    - "12201"
+  ports:
+    - "12201:12201"
+    - "12201:12201/udp"
+  volumes:
+    - /etc/localtime:/etc/localtime:ro
+    - /etc/timezone:/etc/timezone:ro
+    - ./configuration/logstash:/conf
+  links:
+    - elasticsearch:db
+  command: logstash -f /conf/logstash.conf
+
+kibana:
+  image: kibana
+  links:
+    - elasticsearch:elasticsearch
+  ports:
+    - 5601:5601

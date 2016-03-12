@@ -46,6 +46,10 @@ Install supporting tools
 
 ### To run
 
+Start the ELK service which receives all docker logs
+
+    ./ms run_elk
+
 Execute the following to run the services.
 
     ./ms build
@@ -94,6 +98,16 @@ While Hystric collects metrics which can be pushed via standard means to statsd 
 - While turbine v1 support property based configuration, turbine v2 only supports discovery explicitly via Eureka.  Patches seem slow to be propagated by Netflix team.
  - Spring Cloud Turbine will support Consul on next release
 - Eureka client versions referenced in 1.0.6 are incompatible with the Brixton.M4 Eureka service and should be excluded.
+
+### ELK Notes
+
+- ELK is available to analyse the main spring boot application logs
+- This is acheived via the docker GELF log driver in a trivially simple manner
+
+* CAVEATS *
+- Solution requires communication through docker host
+- Soltuion requires ELK to be available before dependant containers are started
+- GELF is not secure
 
 ### Eureka Notes
 
@@ -145,6 +159,13 @@ https://github.com/ryantenney/metrics-spring
 - http://dak1n1.com/blog/14-http-load-generate/
 - http://gatling.io/#/
 - https://blazemeter.com/blog/open-source-load-testing-tools-which-one-should-you-use
+
+### ELK
+http://elk-docker.readthedocs.org/#running-with-docker-compose
+http://nathanleclaire.com/blog/2015/04/27/automating-docker-logging-elasticsearch-logstash-kibana-and-logspout/
+https://github.com/gliderlabs/logspout
+http://www.labouisse.com/how-to/2015/09/14/elk-and-docker-1-8/
+http://www.labouisse.com/how-to/2015/09/23/elk-docker-and-spring-boot/
 
 ### Undertow vs Tomcat
 - http://www.alexecollins.com/spring-boot-performance/

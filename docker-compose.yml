@@ -9,6 +9,9 @@ person-service:
   links:
     - person-service-redis
     - eureka-service
+  log_driver: gelf
+  log_opt:
+    gelf-address: udp://${DOCKER_HOST_IP}:12201
 
 person-recommendation-service:
   build: ./microservices/core/person-recommendation-service/.
@@ -20,6 +23,9 @@ person-recommendation-service:
     - "8081:8080"
   links:
     - eureka-service
+  log_driver: gelf
+  log_opt:
+    gelf-address: udp://${DOCKER_HOST_IP}:12201
 
 product-recommendation-service:
   build: ./microservices/core/product-recommendation-service/.
@@ -31,6 +37,9 @@ product-recommendation-service:
     - "8082:8080"
   links:
     - eureka-service
+  log_driver: gelf
+  log_opt:
+    gelf-address: udp://${DOCKER_HOST_IP}:12201
 
 person-composite-service:
   build: ./microservices/aggregate/person-composite-service/.
@@ -44,11 +53,28 @@ person-composite-service:
   links:
     - eureka-service
     - grafana
+  log_driver: gelf
+  log_opt:
+    gelf-address: udp://${DOCKER_HOST_IP}:12201
 
 person-service-redis:
   image: redis:3.0.7
   ports:
     - "6379:6379"
+
+eureka-service:
+  build: ./microservices/support/eureka/.
+  volumes:
+    - /etc/localtime:/etc/localtime:ro
+    - /etc/timezone:/etc/timezone:ro
+    - ./microservices/support/eureka/build/libs:/build
+  expose:
+    - 8761
+  ports:
+    - "8001:8761"
+  log_driver: gelf
+  log_opt:
+    gelf-address: udp://${DOCKER_HOST_IP}:12201
 
 hystrix-dashboard-service:
   build: ./microservices/support/hystrix-dashboard/.
@@ -62,17 +88,6 @@ hystrix-dashboard-service:
     - person-composite-service
     - eureka-service
     - turbine-service
-
-eureka-service:
-  build: ./microservices/support/eureka/.
-  volumes:
-    - /etc/localtime:/etc/localtime:ro
-    - /etc/timezone:/etc/timezone:ro
-    - ./microservices/support/eureka/build/libs:/build
-  expose:
-    - 8761
-  ports:
-    - "8001:8761"
 
 turbine-service:
   build: ./microservices/support/turbine/.
@@ -103,7 +118,7 @@ probe:
   pid: "host"
   privileged: true
   environment:
-    CHECKPOINT_DISABLE: true
+    CHECKPOINT_DISABLE: "true"
   labels:
     - "works.weave.role=system"
   volumes:
