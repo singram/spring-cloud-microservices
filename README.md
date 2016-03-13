@@ -8,6 +8,7 @@ Experiments in spring cloud and the Netflix OSS stack
 - Eureka (DONE)/Consul
 - Vault
 - Dynamic configuration
+- ELK (DONE)
 
 ## Setup
 
@@ -104,10 +105,11 @@ While Hystric collects metrics which can be pushed via standard means to statsd 
 - ELK is available to analyse the main spring boot application logs
 - This is acheived via the docker GELF log driver in a trivially simple manner
 
-* CAVEATS *
+#### CAVEATS
 - Solution requires communication through docker host
 - Soltuion requires ELK to be available before dependant containers are started
 - GELF is not secure
+- Current setup is lossy.  If ELK is down messages will be lost
 
 ### Eureka Notes
 
@@ -161,11 +163,11 @@ https://github.com/ryantenney/metrics-spring
 - https://blazemeter.com/blog/open-source-load-testing-tools-which-one-should-you-use
 
 ### ELK
-http://elk-docker.readthedocs.org/#running-with-docker-compose
-http://nathanleclaire.com/blog/2015/04/27/automating-docker-logging-elasticsearch-logstash-kibana-and-logspout/
-https://github.com/gliderlabs/logspout
-http://www.labouisse.com/how-to/2015/09/14/elk-and-docker-1-8/
-http://www.labouisse.com/how-to/2015/09/23/elk-docker-and-spring-boot/
+- http://elk-docker.readthedocs.org/#running-with-docker-compose
+- http://nathanleclaire.com/blog/2015/04/27/automating-docker-logging-elasticsearch-logstash-kibana-and-logspout/
+- https://github.com/gliderlabs/logspout
+- http://www.labouisse.com/how-to/2015/09/14/elk-and-docker-1-8/
+- http://www.labouisse.com/how-to/2015/09/23/elk-docker-and-spring-boot/
 
 ### Undertow vs Tomcat
 - http://www.alexecollins.com/spring-boot-performance/
