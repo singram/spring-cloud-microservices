@@ -16,14 +16,6 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'spring-boot'
 
-jar {
-    baseName = 'person-service'
-    version = '0.0.1-SNAPSHOT'
-}
-
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
 repositories {
     mavenLocal()
     jcenter()
@@ -31,6 +23,11 @@ repositories {
     maven { url "https://repo.spring.io/milestone" }
 }
 
+processResources {
+    filesMatching("**/application.yml") {
+        expand(project.properties)
+    }
+}
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web") {

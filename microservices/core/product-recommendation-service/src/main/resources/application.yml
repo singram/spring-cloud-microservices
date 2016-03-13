@@ -4,7 +4,3 @@ info:
     description: "${description}"
     version: "${version}"
     created_at: "${new Date()}"
-     
-spring:
-  redis:
-    host: person-service-redis

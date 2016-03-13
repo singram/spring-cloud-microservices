@@ -1,3 +1,9 @@
+info:
+  build:
+    name: "${name}"
+    description: "${description}"
+    version: "${version}"
+    created_at: "${new Date()}"
 feign:
   hystrix:
     enabled: false # Integration is limited.  Deliberately disabled for demo purposes

@@ -107,9 +107,9 @@ While Hystric collects metrics which can be pushed via standard means to statsd 
 
 #### ELK CAVEATS
 - Solution requires communication through docker host
-- Soltuion requires ELK to be available before dependant containers are started
+- Solution requires ELK to be available before dependant containers are started
 - GELF is not secure on the wire
-- GELF is less problematic using UDP and as such is not guarenteed to loose messages
+- GELF is less problematic using UDP and as such is likely to drop messages
 - Current setup is lossy.  If ELK is down messages will be lost
 
 ### Eureka Notes
