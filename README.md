@@ -105,10 +105,10 @@ While Hystric collects metrics which can be pushed via standard means to statsd 
 - ELK is available to analyse the main spring boot application logs
 - This is acheived via the docker GELF log driver in a trivially simple manner
 
-#### CAVEATS
+#### ELK CAVEATS
 - Solution requires communication through docker host
 - Soltuion requires ELK to be available before dependant containers are started
-- GELF is not secure
+- GELF is not secure on the wire
 - Current setup is lossy.  If ELK is down messages will be lost
 
 ### Eureka Notes
@@ -149,8 +149,8 @@ While Hystric collects metrics which can be pushed via standard means to statsd 
 - http://1.bp.blogspot.com/-JaBO-Dk9oNI/VMzVWnxeP_I/AAAAAAAABOA/bYBwau60AVw/s1600/hystrix-grafana.png
 
 ### Instrumentation
-https://objectpartners.com/2015/05/07/intelligent-microservice-metrics-with-spring-boot-and-statsd/
-https://github.com/ryantenney/metrics-spring
+- https://objectpartners.com/2015/05/07/intelligent-microservice-metrics-with-spring-boot-and-statsd/
+- https://github.com/ryantenney/metrics-spring
 
 ### Docker host Monitoring
 - https://www.brianchristner.io/how-to-setup-docker-monitoring/
