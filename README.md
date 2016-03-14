@@ -169,6 +169,7 @@ While Hystric collects metrics which can be pushed via standard means to statsd 
 - https://github.com/gliderlabs/logspout
 - http://www.labouisse.com/how-to/2015/09/14/elk-and-docker-1-8/
 - http://www.labouisse.com/how-to/2015/09/23/elk-docker-and-spring-boot/
+- http://knes1.github.io/blog/2015/2015-08-16-manage-spring-boot-logs-with-elasticsearch-kibana-and-logstash.html
 
 ### Undertow vs Tomcat
 - http://www.alexecollins.com/spring-boot-performance/

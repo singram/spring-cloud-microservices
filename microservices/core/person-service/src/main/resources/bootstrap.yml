@@ -1,6 +1,9 @@
 spring:
   application:
     name: person-service
+  cloud:
+    config:
+      enabled: false   
 
 eureka:
   client:

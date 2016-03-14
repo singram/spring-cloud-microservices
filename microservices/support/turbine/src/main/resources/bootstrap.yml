@@ -1,7 +1,9 @@
 spring:
   application:
     name: turbine
-    
+  cloud:
+    config:
+      enabled: false   
 eureka:
   client:
     fetchRegistry: true

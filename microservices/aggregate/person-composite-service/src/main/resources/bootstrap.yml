@@ -1,6 +1,9 @@
 spring:
   application:
     name: person-composite-service
+  cloud:
+    config:
+      enabled: false   
     
 eureka:
   client: # Refreshes automatically every 30 seconds

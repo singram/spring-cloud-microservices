@@ -1,6 +1,9 @@
 spring:
   application:
     name: product-recommendation-service
+  cloud:
+    config:
+      enabled: false   
 
 eureka:
   client:
