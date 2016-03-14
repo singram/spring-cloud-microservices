@@ -104,6 +104,19 @@ turbine-service:
   links:
     - eureka-service
 
+zuul-service:
+  build: ./microservices/support/zuul/.
+  volumes:
+    - /etc/localtime:/etc/localtime:ro
+    - /etc/timezone:/etc/timezone:ro
+    - ./microservices/support/zuul/build/libs:/build
+  expose:
+    - 8010
+  ports:
+    - "8010:8910"
+  links:
+    - eureka-service
+
 grafana:
   image: kamon/grafana_graphite
   ports:
