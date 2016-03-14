@@ -1,0 +1,30 @@
+server:
+  port: 8080
+
+info:
+  component: Zuul
+
+eureka:
+  client: # Refreshes automatically every 30 seconds
+    healthcheck:
+      enabled: true  # Update Eureka if health check is down (not enabled by default)
+    serviceUrl:
+      defaultZone: http://eureka-service:8761/eureka/    
+  instance:
+    preferIpAddress: true
+    leaseRenewalIntervalInSeconds: 10
+    metadataMap:
+      instanceId: ${${spring.application.name}:${spring.application.instance_id:${random.value}}}
+
+zuul:
+  ignoredServices: "*"
+  routes:
+    person-composite-service:
+      path: /composite/**
+    person-service:
+      path: /person/**
+    person-recommendation-service:
+      path: /person_rec/**
+    product-recommendation-service:
+      path: /product_rec/**
+      

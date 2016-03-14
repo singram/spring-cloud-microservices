@@ -33,6 +33,7 @@ function build {
     cd microservices/support/hystrix-dashboard;           ./gradlew clean build; cd -
     cd microservices/support/turbine;                     ./gradlew clean build; cd -
     cd microservices/support/eureka;                      ./gradlew clean build; cd -
+    cd microservices/support/zuul;                        ./gradlew clean build; cd -
 
     find . -name *SNAPSHOT.jar -exec du -h {} \;
 }
