@@ -4,8 +4,6 @@ person-service:
     - /etc/localtime:/etc/localtime:ro
     - /etc/timezone:/etc/timezone:ro
     - ./microservices/core/person-service/build/libs:/build
-  ports:
-    - "8080:8080"
   links:
     - person-service-redis
     - eureka-service
@@ -19,8 +17,6 @@ person-recommendation-service:
     - /etc/localtime:/etc/localtime:ro
     - /etc/timezone:/etc/timezone:ro
     - ./microservices/core/person-recommendation-service/build/libs:/build
-  ports:
-    - "8081:8080"
   links:
     - eureka-service
   log_driver: gelf
@@ -33,8 +29,6 @@ product-recommendation-service:
     - /etc/localtime:/etc/localtime:ro
     - /etc/timezone:/etc/timezone:ro
     - ./microservices/core/product-recommendation-service/build/libs:/build
-  ports:
-    - "8082:8080"
   links:
     - eureka-service
   log_driver: gelf
@@ -48,8 +42,6 @@ person-composite-service:
     - /etc/localtime:/etc/localtime:ro
     - /etc/timezone:/etc/timezone:ro
     - ./microservices/aggregate/person-composite-service/build/libs:/build
-  ports:
-    - "8083:8080"
   links:
     - eureka-service
     - grafana
@@ -101,6 +93,19 @@ turbine-service:
   ports:
     - "8002:8989"
     - "8003:8990"
+  links:
+    - eureka-service
+
+zuul-service:
+  build: ./microservices/support/zuul/.
+  volumes:
+    - /etc/localtime:/etc/localtime:ro
+    - /etc/timezone:/etc/timezone:ro
+    - ./microservices/support/zuul/build/libs:/build
+  expose:
+    - 8010
+  ports:
+    - "8080:8080"
   links:
     - eureka-service
 
