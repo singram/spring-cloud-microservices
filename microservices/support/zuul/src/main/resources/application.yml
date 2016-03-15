@@ -1,5 +1,5 @@
 server:
-  port: 8010
+  port: 8080
 
 info:
   component: Zuul
@@ -19,5 +19,5 @@ eureka:
 zuul:
   ignoredServices: "*"
   routes:
-    product-composite-service:
-      path: /productcomposite/**
+    person-composite-service:
+      path: /composite/**

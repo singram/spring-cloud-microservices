@@ -113,7 +113,7 @@ zuul-service:
   expose:
     - 8010
   ports:
-    - "8010:8910"
+    - "8010:8080"
   links:
     - eureka-service
 
