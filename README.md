@@ -70,13 +70,21 @@ To accelerate local development, it is recommended to run gradle daemonized.  Th
 
 1. Build and run the system `./ms build && ./ms run`
 2. Check memory and uptime via `./ms stats`.  When the system is stable and all services have started CPU usage on all processes should be nominal.
-3. Generate some load `ab -n 10000 -c 10 -l http://localhost:8083/[async/]2`.  There is also a simple JMeter load script under `\configuration`
+3. Generate some load `ab -n 100000 -c 13 -l http://localhost:8080/composite/[async/]2`.  There is also a simple JMeter load script under `\configuration`
 4. Adjust performance of underlying services
-    `curl  "localhost:808[0-2]/set-processing-time?minMs=1000&maxMs=2000" | jq .`
+
+    curl  "localhost:8080/person/set-processing-time?minMs=1000&maxMs=2000" | jq .
+    curl  "localhost:8080/person_rec/set-processing-time?minMs=1000&maxMs=2000" | jq .
+    curl  "localhost:8080/product_rec/set-processing-time?minMs=1000&maxMs=2000" | jq .
+
    or adjust service error rate
-    `curl  "localhost:808[0-2]/set-error?percentage=20" | jq .`
+
+    curl  "localhost:8080[person|person_rec|product_rec]/set-error?percentage=20" | jq .
+
    or disable a service
-    `docker-compose [un]pause [person-service|person-recommendation-service|product-recommendation-service]`
+
+    docker-compose [un]pause [person-service|person-recommendation-service|product-recommendation-service]
+
 5. Observe Hystrix dashboard for impact `./ms portals` (shows eureka, hystrix & turbine dashboards)
 
 ### Grafana setup

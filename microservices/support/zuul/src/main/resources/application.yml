@@ -21,3 +21,10 @@ zuul:
   routes:
     person-composite-service:
       path: /composite/**
+    person-service:
+      path: /person/**
+    person-recommendation-service:
+      path: /person_rec/**
+    product-recommendation-service:
+      path: /product_rec/**
+      
