@@ -81,7 +81,7 @@ To accelerate local development, it is recommended to run gradle daemonized.  Th
 
    or adjust service error rate
 
-    `curl  "localhost:8080[person|person_rec|product_rec]/set-error?percentage=20" | jq .`
+    `curl  "localhost:8080/[person|person_rec|product_rec]/set-error?percentage=20" | jq .`
 
    or disable a service
 
@@ -95,9 +95,9 @@ Hystrix and JVM metrics can be gathered for instrumentation trending and display
 
 1. Navigate to `localhost:80` in a browser.  Login is `admin` \ `admin`
 2. Create a new data source for graphite.  The url is `http:\\localhost:81`.  Verify connectivity.
-3. Import the two dashboards found under the `\configuration\grafana` directory.  Rememeber to update the time period appropriately.
+3. Import the two dashboards found under the `\configuration\grafana` directory.  Remember to update the time period appropriately.
 
-While Hystric collects metrics which can be pushed via standard means to statsd and other solutions, Turbine does not appear to support the same meterics gathering at this time meaing metrics from all services need to be pushed and centrally aggregated in statsd rather than keys off Turbine which would be prefered.
+While Hystrix collects metrics which can be pushed via standard means to statsd and other solutions, Turbine does not appear to support the same metrics gathering at this time meaning metrics from all services need to be pushed and centrally aggregated in statsd rather than keys off Turbine which would be preferred.
 
 ### Hystrix notes
 
@@ -112,12 +112,12 @@ While Hystric collects metrics which can be pushed via standard means to statsd 
 
 ### ELK Notes
 
-- ELK is available to analyse the main spring boot application logs
-- This is acheived via the docker GELF log driver in a trivially simple manner
+- ELK is available to analyze the main spring boot application logs
+- This is achieved via the docker GELF log driver in a trivially simple manner
 
 #### ELK CAVEATS
 - Solution requires communication through docker host
-- Solution requires ELK to be available before dependant containers are started
+- Solution requires ELK to be available before dependent containers are started
 - GELF is not secure on the wire
 - GELF is less problematic using UDP and as such is likely to drop messages
 - Current setup is lossy.  If ELK is down messages will be lost
@@ -133,14 +133,16 @@ While Hystric collects metrics which can be pushed via standard means to statsd 
 
 | Service                        | Port   | Description  |
 | -------------                  | ------ | ------------ |
-| person-service                 | 8080   | Basic micro service with redis backend |
-| person-recommendation-service  | 8081   | Micro service stub |
-| product-recommendation-service | 8082   | Micro service stub |
-| person-composite-service       | 8083   | Composite service calling above 3 microservices |
-| hystrix-dashboard              | 8000   | SSE visualization tool (Hystrix specific) |
+| person-service                 | -      | Basic micro service with redis backend |
+| person-recommendation-service  | -      | Micro service stub |
+| product-recommendation-service | -      | Micro service stub |
+| person-composite-service       | -      | Composite service calling above 3 microservices |
+| zuul edge service              | 8080   | Edge server proxy to microservices |
 | eureka                         | 8001   | Service discovery service |
+| hystrix-dashboard              | 8000   | SSE visualization tool (Hystrix specific) |
 | turbine                        | 8002/3 | SSE aggregation service |
-| redis                          | 6379   | Backing person service persistance |
+| redis                          | 6379   | Backing person service persistence |
+| scope                          | 4040   | Docker visualization |
 
 ## References
 
@@ -196,5 +198,5 @@ While Hystric collects metrics which can be pushed via standard means to statsd 
 
 ## Credits
 
-Insprired heavily by
+Inspired heavily by
 - http://callistaenterprise.se/blogg/teknik/2015/04/10/building-microservices-with-spring-cloud-and-netflix-oss-part-1/
