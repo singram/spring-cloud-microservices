@@ -1,6 +1,9 @@
 server:
   port: 8761
 
+info:
+  component: eureka-service
+
 eureka:
   environment: dev
   datacenter: localhost
