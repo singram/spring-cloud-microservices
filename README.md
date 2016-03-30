@@ -94,7 +94,7 @@ To accelerate local development, it is recommended to run gradle daemonized.  Th
 Hystrix and JVM metrics can be gathered for instrumentation trending and displayed via the following steps
 
 1. Navigate to `localhost:80` in a browser.  Login is `admin` \ `admin`
-2. Create a new data source for graphite.  The url is `http:\\localhost:81`.  Verify connectivity.
+2. Create a new data source for graphite.  The url is `http://localhost:81`.  Verify connectivity.
 3. Import the two dashboards found under the `\configuration\grafana` directory.  Remember to update the time period appropriately.
 
 While Hystrix collects metrics which can be pushed via standard means to statsd and other solutions, Turbine does not appear to support the same metrics gathering at this time meaning metrics from all services need to be pushed and centrally aggregated in statsd rather than keys off Turbine which would be preferred.

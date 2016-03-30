@@ -4,30 +4,33 @@
 ./ms portals
 
 
-curl localhost:8081/metrics | jq .
-curl localhost:8081/health | jq .
-curl localhost:8083/health | jq .
 
-curl -v localhost:8080/person/5 | jq .
-curl -v localhost:8081/recommendations/5 | jq .
-curl -v localhost:8082/recommendations/5 | jq .
-curl -v localhost:8083/5 | jq .
-
-ab -n 100000 -c 15 -l http://localhost:8083/2
+curl -v localhost:8080/person/health | jq .
+curl -v localhost:8080/person/info | jq .
+curl -v localhost:8080/person/metrics | jq .
 
 
-curl  "localhost:8081/pause" | jq .
-curl  "localhost:8081/unpause" | jq .
-curl  "localhost:8081/set-processing-time?minMs=200&maxMs=500" | jq .
-curl  "localhost:8081/set-processing-time?minMs=500&maxMs=1500" | jq .
-curl  "localhost:8081/set-processing-time?minMs=1500&maxMs=1500" | jq .
-curl  "localhost:8081/set-processing-time?minMs=0&maxMs=0" | jq .
-curl  "localhost:8081/set-error?percentage=5" | jq .
-curl  "localhost:8081/set-error?percentage=50" | jq .
-curl  "localhost:8081/set-error?percentage=0" | jq .
+curl -v localhost:8080/person/person/5 | jq .
+curl -v localhost:8080/person_rec/recommendations/5 | jq .
+curl -v localhost:8080/product_rec/recommendations/5 | jq .
+curl -v localhost:8080/composite/1 | jq .
+curl -v localhost:8080/composite/5 | jq .
 
-curl -v localhost:8083/asyn5 | jq .
-ab -n 100000 -c 15 -l http://localhost:8083/async/2
+ab -n 100000 -c 13 -l http://localhost:8080/composite/2
+
+docker-compose pause product-recommendation-service
+docker-compose unpause product-recommendation-service
+
+curl  "localhost:8080/product_rec/set-processing-time?minMs=200&maxMs=500" | jq .
+curl  "localhost:8080/product_rec/set-processing-time?minMs=500&maxMs=1500" | jq .
+curl  "localhost:8080/product_rec/set-processing-time?minMs=1500&maxMs=1500" | jq .
+curl  "localhost:8080/product_rec/set-processing-time?minMs=0&maxMs=0" | jq .
+curl  "localhost:8080/product_rec/set-error?percentage=5" | jq .
+curl  "localhost:8080/product_rec/set-error?percentage=50" | jq .
+curl  "localhost:8080/product_rec/set-error?percentage=0" | jq .
+
+curl -v localhost:8080/composite/async/5 | jq .
+ab -n 100000 -c 15 -l http://localhost:8080/composite/async/2
 
 # Thread limiting
 Edit code
