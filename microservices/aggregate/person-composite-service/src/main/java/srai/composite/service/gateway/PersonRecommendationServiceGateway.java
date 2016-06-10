@@ -23,6 +23,17 @@ public class PersonRecommendationServiceGateway {
   @Autowired
   private PersonRecommendationService personRecommendationService;
 
+  //@HystrixCommand(threadPoolKey="SpecialPool",
+  //    fallbackMethod = "defaultPersonRecommendations",
+  //        commandProperties = { @HystrixProperty( name="execution.isolation.strategy", value="SEMAPHORE"),
+  //          @HystrixProperty( name="execution.isolation.semaphore.maxConcurrentRequests", value="20" } ,
+  //    commandProperties = { @HystrixProperty( name="execution.isolation.strategy", value="THREAD") } ,
+  //    threadPoolProperties = { @HystrixProperty(name = "coreSize", value = "30") })
+  @HystrixCommand(fallbackMethod = "defaultPersonRecommendations")
+  public ResponseEntity<Recommendation[]> getPersonRecommendationsSP(int personId) {
+    return personRecommendationService.getRecommendationsSP(personId);
+  }
+
   @HystrixCommand(fallbackMethod = "defaultPersonRecommendations")
   public ResponseEntity<Recommendation[]> getPersonRecommendations(int personId) {
     return personRecommendationService.getRecommendations(personId);

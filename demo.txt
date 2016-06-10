@@ -29,6 +29,12 @@ curl  "localhost:8080/product_rec/set-error?percentage=5" | jq .
 curl  "localhost:8080/product_rec/set-error?percentage=50" | jq .
 curl  "localhost:8080/product_rec/set-error?percentage=0" | jq .
 
+# Circuit breaker isolation proof
+ab -n 100000 -c 8 -l http://localhost:8080/composite/2
+ab -n 100000 -c 7 -l http://localhost:8080/composite/skip_problems/3
+curl  "localhost:8080/product_rec/set-processing-time?minMs=1500&maxMs=1500" | jq .
+
+
 curl -v localhost:8080/person/metrics | jq .
 
 

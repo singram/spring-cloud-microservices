@@ -24,6 +24,11 @@ public class ProductRecommendationServiceGateway {
   private ProductRecommendationService productRecommendationService;
 
   @HystrixCommand(fallbackMethod = "defaultProductRecommendations")
+  public ResponseEntity<Recommendation[]> getProductRecommendationsSP(int personId) {
+    return productRecommendationService.getRecommendationsSP(personId);
+  }
+
+  @HystrixCommand(fallbackMethod = "defaultProductRecommendations")
   public ResponseEntity<Recommendation[]> getProductRecommendations(int personId) {
     return productRecommendationService.getRecommendations(personId);
   }
