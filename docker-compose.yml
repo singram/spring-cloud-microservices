@@ -7,9 +7,9 @@ person-service:
   links:
     - person-service-redis
     - eureka-service
-  log_driver: gelf
-  log_opt:
-    gelf-address: udp://${DOCKER_HOST_IP}:12201
+#  log_driver: gelf
+#  log_opt:
+#    gelf-address: udp://${DOCKER_HOST_IP}:12201
 
 person-recommendation-service:
   build: ./microservices/core/person-recommendation-service/.
@@ -19,9 +19,9 @@ person-recommendation-service:
     - ./microservices/core/person-recommendation-service/build/libs:/build
   links:
     - eureka-service
-  log_driver: gelf
-  log_opt:
-    gelf-address: udp://${DOCKER_HOST_IP}:12201
+#  log_driver: gelf
+#  log_opt:
+#    gelf-address: udp://${DOCKER_HOST_IP}:12201
 
 product-recommendation-service:
   build: ./microservices/core/product-recommendation-service/.
@@ -31,9 +31,9 @@ product-recommendation-service:
     - ./microservices/core/product-recommendation-service/build/libs:/build
   links:
     - eureka-service
-  log_driver: gelf
-  log_opt:
-    gelf-address: udp://${DOCKER_HOST_IP}:12201
+#  log_driver: gelf
+#  log_opt:
+#    gelf-address: udp://${DOCKER_HOST_IP}:12201
 
 person-composite-service:
   build: ./microservices/aggregate/person-composite-service/.
@@ -45,9 +45,9 @@ person-composite-service:
   links:
     - eureka-service
     - grafana
-  log_driver: gelf
-  log_opt:
-    gelf-address: udp://${DOCKER_HOST_IP}:12201
+#  log_driver: gelf
+#  log_opt:
+#    gelf-address: udp://${DOCKER_HOST_IP}:12201
 
 person-service-redis:
   image: redis:3.2.0-alpine
@@ -64,9 +64,9 @@ eureka-service:
     - 8761
   ports:
     - "8001:8761"
-  log_driver: gelf
-  log_opt:
-    gelf-address: udp://${DOCKER_HOST_IP}:12201
+#  log_driver: gelf
+#  log_opt:
+#    gelf-address: udp://${DOCKER_HOST_IP}:12201
 
 hystrix-dashboard-service:
   build: ./microservices/support/hystrix-dashboard/.

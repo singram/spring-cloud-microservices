@@ -12,5 +12,8 @@ import srai.common.micro.service.model.Recommendation;
 public interface ProductRecommendationService {
   @RequestMapping(method = RequestMethod.GET, value = "/recommendations/{personId}")
   ResponseEntity<Recommendation[]> getRecommendations(@PathVariable("personId") int personId);
+
+  @RequestMapping(method = RequestMethod.GET, value = "/recommendations/{personId}?skipProblems=yes")
+  ResponseEntity<Recommendation[]> getRecommendationsSP(@PathVariable("personId") int personId);
 }
 

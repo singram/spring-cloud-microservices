@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,9 +27,12 @@ public class PersonController extends ManagedResponseControllerBase {
    * @return
    */
   @RequestMapping(value = "/person/{personId}", method = RequestMethod.GET)
-  @ResponseBody public ResponseEntity<?> getPerson(@PathVariable long personId) {
+  @ResponseBody public ResponseEntity<?> getPerson(@PathVariable long personId, @RequestParam(value="skipProblems", defaultValue="no") String skipProblems) {
     logger.info("/person/{personId} called", personId);
-    final int pt = controlResponseTimeAndError();
+    int pt = 0;
+    if (skipProblems != null && skipProblems.equals("no")) {
+      pt = controlResponseTimeAndError();
+    }
     logger.debug("/person/{personId} return the found person, processing time: {}", personId, pt);
     CachablePerson person = new CachablePerson(personId);
     person = personRepository.get(person);

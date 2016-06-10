@@ -12,5 +12,8 @@ import srai.common.micro.service.model.Person;
 public interface PersonService {
   @RequestMapping(method = RequestMethod.GET, value = "/person/{personId}")
   ResponseEntity<Person> getPerson(@PathVariable("personId") int personId);
+
+  @RequestMapping(method = RequestMethod.GET, value = "/person/{personId}?skipProblems=yes")
+  ResponseEntity<Person> getPersonSP(@PathVariable("personId") int personId);
 }
 

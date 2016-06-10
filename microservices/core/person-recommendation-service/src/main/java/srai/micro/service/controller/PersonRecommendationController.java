@@ -3,6 +3,7 @@ package srai.micro.service.controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,9 +23,12 @@ public class PersonRecommendationController extends ManagedResponseControllerBas
    * @return
    */
   @RequestMapping(value = "/recommendations/{personId}", method = RequestMethod.GET)
-  @ResponseBody public Set<Recommendation> getPerson(@PathVariable int personId) {
+  @ResponseBody public Set<Recommendation> getPerson(@PathVariable int personId, @RequestParam(value="skipProblems", defaultValue="no") String skipProblems) {
     logger.info("/recommendations called");
-    final int pt = controlResponseTimeAndError();
+    int pt = 0;
+    if (skipProblems != null && skipProblems.equals("no")) {
+      pt = controlResponseTimeAndError();
+    }
     Set<Recommendation> recommendations = new HashSet<Recommendation>();
     recommendations.add(new Recommendation("person recommendation 1"));
     recommendations.add(new Recommendation("person recommendation 2"));
