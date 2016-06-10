@@ -57,18 +57,21 @@
           "steppedLine": false,
           "targets": [
             {
-              "target": "aliasByMetric(sumSeries(composite_service.P*.*.rollingCountSuccess))"
+              "target": "alias(sumSeries(composite_service.P*.*.rollingCountSuccess), 'Count Success')",
+              "hide": false
             },
             {
-              "target": "aliasByMetric(sumSeries(composite_service.P*.*.rollingCountTimeout))"
+              "target": "alias(sumSeries(composite_service.P*.*.rollingCountTimeout), 'Count Timeout')",
+              "hide": false
             },
             {
-              "target": "aliasByMetric(sumSeries(composite_service.P*.*.rollingCountFailure))"
+              "target": "alias(sumSeries(composite_service.*.*.rollingCountShortCircuited), 'Count Shorted')",
+              "hide": false
             }
           ],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Microservice responses",
+          "title": "Circuit Breaker aggregate",
           "tooltip": {
             "shared": true,
             "value_type": "cumulative"
@@ -124,16 +127,16 @@
           "steppedLine": false,
           "targets": [
             {
-              "target": "composite_service.HystrixThreadPool.PersonService.largestPoolSize"
+              "target": "aliasByNode(composite_service.HystrixThreadPool.*Gateway.threadActiveCount, 2)"
             },
             {
               "hide": false,
-              "target": "composite_service.HystrixThreadPool.PersonService.threadActiveCount"
+              "target": "aliasByMetric(composite_service.HystrixThreadPool.PersonServiceGateway.propertyValue_corePoolSize)"
             }
           ],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Threads",
+          "title": "Active Threads / Pool Size",
           "tooltip": {
             "shared": true,
             "value_type": "cumulative"
@@ -218,22 +221,25 @@
           "targets": [
             {
               "hide": false,
-              "target": "alias(perSecond(sumSeries(composite_service.HystrixThreadPool.*.totalTaskCount)), 'Task Count')",
+              "target": "alias(transformNull(perSecond(sumSeries(composite_service.HystrixThreadPool.*.totalTaskCount)), 0), 'Task Count')",
               "textEditor": false
             },
             {
-              "target": "aliasByNode(composite_service.PersonRecommendationsService.*.latencyExecute_mean, 2)"
+              "target": "aliasByNode(composite_service.PersonRecommendationServiceGateway.*.latencyExecute_mean, 2)",
+              "hide": false
             },
             {
-              "target": "aliasByNode(composite_service.ProductRecommendationsService.*.latencyExecute_mean, 2)"
+              "target": "aliasByNode(composite_service.ProductRecommendationServiceGateway.*.latencyExecute_mean, 2)",
+              "hide": false
             },
             {
-              "target": "aliasByNode(composite_service.PersonService.*.latencyExecute_mean, 2)"
+              "target": "aliasByNode(composite_service.PersonServiceGateway.*.latencyExecute_mean, 2)",
+              "hide": false
             }
           ],
           "timeFrom": null,
           "timeShift": null,
-          "title": "Execution & latency",
+          "title": "Commands Executed & Service latency",
           "tooltip": {
             "shared": true,
             "value_type": "cumulative"
@@ -353,7 +359,7 @@
     }
   ],
   "time": {
-    "from": "now-15m",
+    "from": "now-1h",
     "to": "now"
   },
   "templating": {
@@ -363,6 +369,6 @@
     "list": []
   },
   "schemaVersion": 6,
-  "version": 1,
+  "version": 5,
   "links": []
 }

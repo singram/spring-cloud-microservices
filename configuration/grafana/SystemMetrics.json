@@ -1,5 +1,5 @@
 {
-  "id": null,
+  "id": 1,
   "title": "System Metrics",
   "originalTitle": "System Metrics",
   "tags": [],
@@ -181,12 +181,6 @@
           "steppedLine": false,
           "targets": [
             {
-              "target": "alias(consolidateBy(stats.timers.$Application.$Host.system-metric.ps-marksweep-garbage-collector.garbage-collection-count.sum, 'sum'), 'OldGen Collections')"
-            },
-            {
-              "target": "alias(consolidateBy(stats.timers.$Application.$Host.system-metric.ps-scavenge-garbage-collector.garbage-collection-count.sum, 'sum'), 'NewGen Collections')"
-            },
-            {
               "target": "alias(consolidateBy(composite_service.jvm.gc.PS-MarkSweep.count, 'sum'), 'OldGen Collections')"
             },
             {
@@ -264,22 +258,16 @@
           "steppedLine": false,
           "targets": [
             {
-              "target": "alias(stats.timers.$Application.$Host.system-metric.jmx-memory.heap-max.upper, 'Max Heap')"
+              "target": "alias(composite_service.jvm.mem.heap.max, 'Max Heap')",
+              "hide": false
             },
             {
-              "target": "alias(stats.timers.$Application.$Host.system-metric.jmx-memory.heap-used.upper, 'Used Heap')"
+              "target": "alias(composite_service.jvm.mem.heap.used, 'Used Heap')",
+              "hide": false
             },
             {
-              "target": "alias(stats.timers.$Application.$Host.system-metric.jmx-memory.heap-committed.upper, 'Committed Heap')"
-            },
-            {
-              "target": "alias(composite_service.jvm.mem.heap.max, 'Max Heap')"
-            },
-            {
-              "target": "alias(composite_service.jvm.mem.heap.used, 'Used Heap')"
-            },
-            {
-              "target": "alias(composite_service.jvm.mem.heap.committed, 'Committed Heap')"
+              "target": "alias(composite_service.jvm.mem.heap.committed, 'Committed Heap')",
+              "hide": false
             }
           ],
           "timeFrom": null,
@@ -344,15 +332,6 @@
           "stack": false,
           "steppedLine": false,
           "targets": [
-            {
-              "target": "alias(stats.timers.$Application.$Host.system-metric.jmx-memory.non-heap-max.upper, 'Max')"
-            },
-            {
-              "target": "alias(stats.timers.$Application.$Host.system-metric.jmx-memory.non-heap-committed.upper, 'Committed')"
-            },
-            {
-              "target": "alias(stats.timers.$Application.$Host.system-metric.jmx-memory.non-heap-used.upper, 'Used')"
-            },
             {
               "target": "alias(composite_service.jvm.mem.non-heap.max, 'Max')"
             },
@@ -579,6 +558,11 @@
     "list": [
       {
         "allFormat": "glob",
+        "current": {
+          "text": "None",
+          "value": "",
+          "isNone": true
+        },
         "datasource": null,
         "includeAll": false,
         "name": "Application",
@@ -593,15 +577,15 @@
         "query": "stats.timers.*",
         "refresh": true,
         "refresh_on_load": false,
-        "type": "query",
+        "type": "query"
+      },
+      {
+        "allFormat": "glob",
         "current": {
           "text": "None",
           "value": "",
           "isNone": true
-        }
-      },
-      {
-        "allFormat": "glob",
+        },
         "datasource": null,
         "includeAll": false,
         "name": "Host",
@@ -616,12 +600,7 @@
         "query": "stats.timers.*.*",
         "refresh": true,
         "refresh_on_load": false,
-        "type": "query",
-        "current": {
-          "text": "None",
-          "value": "",
-          "isNone": true
-        }
+        "type": "query"
       }
     ]
   },
@@ -630,6 +609,6 @@
   },
   "refresh": "5s",
   "schemaVersion": 6,
-  "version": 8,
+  "version": 2,
   "links": []
 }
