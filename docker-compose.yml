@@ -118,7 +118,7 @@ grafana:
     - 8126:8126
 
 probe:
-  image: weaveworks/scope:0.15.0
+  image: weaveworks/scope:0.16.0
   net: "host"
   pid: "host"
   privileged: true
