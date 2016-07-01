@@ -30,12 +30,16 @@ function build {
     cd microservices/core/person-recommendation-service;  ./gradlew clean build; cd -
     cd microservices/core/product-recommendation-service; ./gradlew clean build; cd -
     cd microservices/aggregate/person-composite-service;  ./gradlew clean build; cd -
+    cd microservices/support/spring-boot-admin;           ./gradlew clean build; cd -
     cd microservices/support/hystrix-dashboard;           ./gradlew clean build; cd -
     cd microservices/support/turbine;                     ./gradlew clean build; cd -
     cd microservices/support/eureka;                      ./gradlew clean build; cd -
     cd microservices/support/zuul;                        ./gradlew clean build; cd -
 
     find . -name *SNAPSHOT.jar -exec du -h {} \;
+
+    docker-compose -f rm
+    docker-compose build
 }
 
 case $CMD in
@@ -68,6 +72,7 @@ case $CMD in
     "portals")
         echo "Viewing management portals..."
         firefox http://localhost:8001 \
+                http://localhost:8004 \
                 http://localhost:8000/hystrix \
                 http://localhost:8000/hystrix/monitor?stream=http%3A%2F%2Fperson-composite-service%3A8080%2Fhystrix.stream \
                 http://localhost:8000/hystrix/monitor?stream=http%3A%2F%2Fturbine-service%3A8989%2Fturbine.stream \
