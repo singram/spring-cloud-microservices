@@ -9,7 +9,16 @@ buildscript {
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath "gradle.plugin.com.gorylenko.gradle-git-properties:gradle-git-properties:1.4.16"
     }
+}
+
+plugins {
+    id "com.gorylenko.gradle-git-properties" version "1.4.16"
+}
+
+gitProperties {
+    gitRepositoryRoot = new File("${project.rootDir}/../../..")
 }
 
 apply plugin: 'java'
@@ -42,6 +51,10 @@ dependencies {
 
     testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
 }
+
+//springBoot  { // Feature of Spring-Boot 4.x+
+//    buildInfo()
+//}
 
 dependencyManagement {
     imports {

@@ -5,6 +5,10 @@ info:
     version: "${version}"
     created_at: "${new Date()}"
   version: "${version}" # Specifically added for Spring-boot-admin
+management:
+  info:
+    git:
+      mode: full
 feign:
   hystrix:
     enabled: false # Integration is limited.  Deliberately disabled for demo purposes

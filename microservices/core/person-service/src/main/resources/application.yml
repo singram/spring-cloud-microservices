@@ -5,6 +5,10 @@ info:
     version: "${version}"
     created_at: "${new Date()}"
   version: "${version}" # Specifically added for Spring-boot-admin
+management:
+  info:
+    git:
+      mode: full
 spring:
   redis:
     host: person-service-redis
