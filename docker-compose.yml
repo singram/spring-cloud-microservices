@@ -68,16 +68,16 @@ eureka-service:
 #  log_opt:
 #    gelf-address: udp://${DOCKER_HOST_IP}:12201
 
-spring-boot-admin-service:
-  build: ./microservices/support/spring-boot-admin/.
-  volumes:
-    - /etc/localtime:/etc/localtime:ro
-    - /etc/timezone:/etc/timezone:ro
-    - ./microservices/support/spring-boot-admin/build/libs:/build
-  ports:
-    - "8004:8080"
-  links:
-    - eureka-service
+#spring-boot-admin-service:
+#  build: ./microservices/support/spring-boot-admin/.
+#  volumes:
+#    - /etc/localtime:/etc/localtime:ro
+#    - /etc/timezone:/etc/timezone:ro
+#    - ./microservices/support/spring-boot-admin/build/libs:/build
+#  ports:
+#    - "8004:8080"
+#  links:
+#    - eureka-service
 
 hystrix-dashboard-service:
   build: ./microservices/support/hystrix-dashboard/.
